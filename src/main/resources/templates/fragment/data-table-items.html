@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <div class="col-xl-12" th:fragment="data-table-items">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="mt-0 header-title mb-4">List items</h4>
+            <div class="table-responsive order-table">
+                <table class="table table-hover mb-0">
+                    <thead>
+                    <tr>
+                        <th scope="col">(#) Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col" colspan="2">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody th:each="product:${products}">
+                    <tr>
+                        <th scope="row" th:text="${product.id}">#14562</th>
+                        <td th:text="${product.name}">
+                            item
+                        </td>
+                        <td th:text="${product.price}">$104</td>
+                        <td th:text="${product.price}">$104</td>
+                        <td><span class="badge  badge-danger"><i class="mdi mdi-checkbox-blank-circle text-primary"></i> new </span></td>
+                        <td>
+                            <div>
+                                <a th:href="'/admin/editItem?id='+${product.id}" data-product_id="" th:attr="data-product_id=${product.id}" class="btn btn-primary btn-sm" id="editItem">Edit</a>
+                            </div>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</html>

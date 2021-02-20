@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	  html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<div th:replace="include :: head"> </div>
+
+	<body>
+		<div class="wrapper">
+		<!-- ============================================================= TOP NAVIGATION ============================================================= -->
+		<div th:replace="~{templates/topbar :: topbar}"></div>
+		<!-- ============================================================= TOP NAVIGATION : END ============================================================= -->
+
+		<!-- ============================================================= HEADER ============================================================= -->
+		<div th:replace="~{templates/header :: header}"></div>
+
+		<!-- ============================================================= HEADER : END ============================================================= -->
+			<main id="faq" class="inner">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-8 center-block">
+								<div class="info-404 text-center">
+									<h2 class="primary-color inner-bottom-xs">404</h2>
+									<p class="lead">We are sorry, the page you've requested is not available.</p>
+									<div class="text-center">
+										<a href="/" class="btn-lg huge"><i class="fa fa-home"></i> Go to Home Page</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</main>
+
+				<!-- ============================================================= FOOTER ============================================================= -->
+			<div th:replace="~{templates/footer :: footer}"></div>
+
+				<!-- ============================================================= FOOTER : END ============================================================= -->
+			</div><!-- /.wrapper -->
+
+			<!-- JavaScripts placed at the end of the document so the pages load faster -->
+		<div th:replace="include::js"></div>
+	</body>
+</html>

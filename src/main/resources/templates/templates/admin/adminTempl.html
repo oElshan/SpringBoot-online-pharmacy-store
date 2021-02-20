@@ -1,0 +1,309 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+    <head th:fragment="head" >
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+        <title>Agroxa - Responsive Bootstrap 4 Admin Dashboard</title>
+        <meta content="Admin Dashboard" name="description" />
+        <meta content="Themesbrand" name="author" />
+        <link rel="shortcut icon" href="/assets/images/favicon.ico">
+
+        <link rel="stylesheet" href="/assets/plugins/morris/morris.css">
+        <link href="/assets/plugins/bootstrap-md-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet">
+
+        <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="/assets/css/metismenu.min.css" rel="stylesheet" type="text/css">
+        <link href="/assets/css/icons.css" rel="stylesheet" type="text/css">
+        <link href="/assets/css/style.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body>
+<!-- Begin page -->
+    <div id="wrapper">
+    <!-- Top Bar Start -->
+    <div th:fragment="topbar" class="topbar">
+
+        <!-- LOGO -->
+        <div class="topbar-left">
+            <a href="/" class="logo">
+                <svg width="77.76" height="28.8" viewBox="0 0 77.76 28.8" xmlns="http://www.w3.org/2000/svg"><g id="svgGroup" stroke-linecap="round" fill-rule="evenodd" font-size="9pt" stroke="#000" stroke-width="0.25mm" fill="none" style="stroke:#35a989;stroke-width:0.25mm;fill:#35a989"><path d="M 65.13 22.2 L 65.13 0 L 67.83 0 L 67.83 12.69 L 74.88 6.3 L 76.44 8.01 L 70.41 13.35 L 77.76 20.7 L 75.9 22.5 L 67.83 14.19 L 67.83 22.2 L 65.13 22.2 Z M 17.91 8.7 L 18.48 6.6 A 5.257 5.257 0 0 1 19.748 6.741 Q 21.415 7.156 21.93 8.79 A 3.234 3.234 0 0 1 22.101 8.549 Q 22.195 8.427 22.314 8.292 A 8.206 8.206 0 0 1 22.575 8.01 A 4.915 4.915 0 0 1 23.126 7.523 A 6.352 6.352 0 0 1 23.64 7.17 A 6.305 6.305 0 0 1 24.498 6.729 A 7.832 7.832 0 0 1 25.08 6.51 Q 25.89 6.24 26.88 6.24 Q 28.23 6.24 29.475 6.78 Q 30.72 7.32 31.665 8.34 A 7.112 7.112 0 0 1 32.744 9.885 A 8.965 8.965 0 0 1 33.18 10.86 A 8.62 8.62 0 0 1 33.663 12.833 A 11.148 11.148 0 0 1 33.75 14.25 A 10.835 10.835 0 0 1 33.575 16.238 A 8.873 8.873 0 0 1 33.195 17.64 A 8.961 8.961 0 0 1 32.399 19.304 A 7.534 7.534 0 0 1 31.695 20.265 A 6.837 6.837 0 0 1 29.753 21.841 A 6.551 6.551 0 0 1 29.52 21.96 Q 28.29 22.56 26.94 22.56 A 6.247 6.247 0 0 1 25.049 22.279 A 5.71 5.71 0 0 1 24.345 22.005 A 9.103 9.103 0 0 1 23.323 21.448 A 6.619 6.619 0 0 1 22.38 20.73 L 22.38 28.8 L 19.68 28.8 L 19.68 10.59 Q 19.68 9.988 19.507 9.589 A 1.261 1.261 0 0 0 19.185 9.135 A 1.716 1.716 0 0 0 18.348 8.738 A 2.397 2.397 0 0 0 17.91 8.7 Z M 61.44 15.51 L 50.52 15.51 A 7.226 7.226 0 0 0 50.862 17.018 Q 51.263 18.161 52.05 18.93 A 4.243 4.243 0 0 0 54.338 20.073 A 6.006 6.006 0 0 0 55.38 20.16 A 11.019 11.019 0 0 0 56.663 20.089 A 8.273 8.273 0 0 0 57.81 19.875 Q 58.89 19.59 59.88 19.14 L 60.51 21.45 A 10.622 10.622 0 0 1 59.064 22.003 A 13.28 13.28 0 0 1 58.08 22.26 A 12.213 12.213 0 0 1 56.553 22.494 A 16.382 16.382 0 0 1 55.05 22.56 A 8.753 8.753 0 0 1 53.311 22.394 A 7.082 7.082 0 0 1 52.02 22.005 Q 50.67 21.45 49.725 20.415 A 6.638 6.638 0 0 1 48.631 18.765 A 8.272 8.272 0 0 1 48.27 17.865 A 9.474 9.474 0 0 1 47.865 16.078 A 12.844 12.844 0 0 1 47.76 14.4 A 10.463 10.463 0 0 1 48.001 12.121 A 9.179 9.179 0 0 1 48.27 11.16 A 8.31 8.31 0 0 1 49.114 9.375 A 7.246 7.246 0 0 1 49.71 8.565 Q 50.64 7.47 51.93 6.855 A 6.362 6.362 0 0 1 54.117 6.27 A 7.74 7.74 0 0 1 54.81 6.24 A 8.373 8.373 0 0 1 56.281 6.363 A 6.186 6.186 0 0 1 57.75 6.81 A 6.015 6.015 0 0 1 59.463 7.957 A 5.65 5.65 0 0 1 59.85 8.37 A 6.583 6.583 0 0 1 61.049 10.496 A 7.564 7.564 0 0 1 61.11 10.68 A 9.105 9.105 0 0 1 61.529 13.333 A 10.218 10.218 0 0 1 61.53 13.47 A 22.561 22.561 0 0 1 61.443 15.479 A 20.779 20.779 0 0 1 61.44 15.51 Z M 38.16 7.17 L 38.73 2.25 L 40.8 2.25 L 40.8 7.17 L 45.12 7.17 L 45.12 9.51 L 40.8 9.51 L 40.8 17.04 A 6.502 6.502 0 0 0 40.828 17.655 Q 40.856 17.955 40.914 18.214 A 3.309 3.309 0 0 0 40.995 18.51 A 3.289 3.289 0 0 0 41.176 18.958 Q 41.294 19.196 41.442 19.38 A 1.885 1.885 0 0 0 41.52 19.47 Q 41.85 19.83 42.315 19.995 Q 42.78 20.16 43.29 20.16 A 4.168 4.168 0 0 0 44.449 20.002 A 3.86 3.86 0 0 0 44.7 19.92 Q 45.36 19.68 45.96 19.35 L 46.71 21.51 A 5.564 5.564 0 0 1 46.225 21.767 Q 45.744 21.994 45.09 22.215 Q 44.07 22.56 42.96 22.56 A 5.55 5.55 0 0 1 41.406 22.353 A 4.185 4.185 0 0 1 39.405 21.09 A 4.736 4.736 0 0 1 38.452 19.373 Q 38.1 18.279 38.1 16.83 L 38.1 9.51 L 35.4 9.51 L 35.4 7.17 L 38.16 7.17 Z M 11.73 7.86 L 11.73 6.6 L 14.19 6.6 L 14.19 18.42 A 3.645 3.645 0 0 0 14.221 18.911 Q 14.298 19.475 14.569 19.761 A 0.89 0.89 0 0 0 14.745 19.905 Q 15.3 20.25 15.96 20.25 L 15.39 22.35 Q 12.581 22.35 11.941 20.124 A 4.076 4.076 0 0 1 11.91 20.01 Q 11.55 20.49 11.085 20.955 A 5.461 5.461 0 0 1 10.097 21.733 A 6.089 6.089 0 0 1 10.02 21.78 A 5.239 5.239 0 0 1 9.08 22.22 A 6.211 6.211 0 0 1 8.67 22.35 A 5.629 5.629 0 0 1 7.674 22.53 A 7.037 7.037 0 0 1 7.02 22.56 Q 5.55 22.56 4.275 21.99 Q 3 21.42 2.055 20.37 A 7.467 7.467 0 0 1 0.898 18.636 A 9.062 9.062 0 0 1 0.555 17.835 A 8.667 8.667 0 0 1 0.081 15.859 A 11.144 11.144 0 0 1 0 14.49 A 9.917 9.917 0 0 1 0.302 12.013 A 8.952 8.952 0 0 1 0.54 11.235 A 8.335 8.335 0 0 1 1.488 9.343 A 7.439 7.439 0 0 1 2.055 8.61 Q 3.03 7.5 4.395 6.87 Q 5.76 6.24 7.38 6.24 A 6.775 6.775 0 0 1 8.818 6.387 A 5.611 5.611 0 0 1 9.825 6.705 A 7.801 7.801 0 0 1 11.111 7.393 A 6.631 6.631 0 0 1 11.73 7.86 Z M 11.49 18.21 L 11.49 9.84 Q 10.68 9.27 9.705 8.925 Q 8.73 8.58 7.65 8.58 A 4.843 4.843 0 0 0 6.31 8.761 A 4.334 4.334 0 0 0 5.67 9 Q 4.77 9.42 4.125 10.185 A 5.218 5.218 0 0 0 3.373 11.386 A 6.451 6.451 0 0 0 3.12 12.03 A 7.028 7.028 0 0 0 2.795 13.614 A 8.586 8.586 0 0 0 2.76 14.4 A 7.717 7.717 0 0 0 2.901 15.899 A 6.534 6.534 0 0 0 3.12 16.725 A 5.785 5.785 0 0 0 3.683 17.932 A 4.964 4.964 0 0 0 4.14 18.555 Q 4.8 19.32 5.685 19.74 Q 6.57 20.16 7.62 20.16 Q 8.76 20.16 9.78 19.62 Q 10.8 19.08 11.49 18.21 Z M 22.38 10.62 L 22.38 18.3 Q 23.16 19.11 24.165 19.635 Q 25.17 20.16 26.4 20.16 A 4.293 4.293 0 0 0 27.661 19.979 A 3.857 3.857 0 0 0 28.26 19.74 Q 29.1 19.32 29.715 18.555 A 5.147 5.147 0 0 0 30.426 17.361 A 6.347 6.347 0 0 0 30.66 16.725 A 7.251 7.251 0 0 0 30.935 15.375 A 9.403 9.403 0 0 0 30.99 14.34 A 8.335 8.335 0 0 0 30.896 13.061 A 6.347 6.347 0 0 0 30.615 11.925 A 6.145 6.145 0 0 0 30.108 10.827 A 5.042 5.042 0 0 0 29.595 10.11 Q 28.95 9.36 28.095 8.97 Q 27.24 8.58 26.28 8.58 A 4.422 4.422 0 0 0 24.592 8.899 A 4.216 4.216 0 0 0 23.955 9.225 Q 22.92 9.87 22.38 10.62 Z M 50.49 13.32 L 59.04 13.32 A 7.307 7.307 0 0 0 58.919 11.944 Q 58.77 11.169 58.439 10.562 A 3.727 3.727 0 0 0 57.9 9.81 A 3.747 3.747 0 0 0 55.812 8.677 A 5.519 5.519 0 0 0 54.75 8.58 A 4.256 4.256 0 0 0 53.325 8.81 A 3.666 3.666 0 0 0 51.855 9.78 A 4.422 4.422 0 0 0 51.017 11.102 Q 50.621 12.04 50.49 13.32 Z" vector-effect="non-scaling-stroke"/></g></svg>
+                        <!--<span>-->
+                                 <!--<img src="/assets/images/logo.png" alt="" height="24">-->
+                        <!--</span>-->
+                <!--<i>-->
+                    <!--<img src="/assets/images/logo-sm.png" alt="" height="22">-->
+                <!--</i>-->
+            </a>
+        </div>
+
+        <nav class="navbar-custom">
+
+            <ul class="navbar-right d-flex list-inline float-right mb-0">
+                <!--todo orderAlert!-->
+                <div id="orderAlert" th:insert="~{fragment/order-alert :: order-alert}"></div>
+
+                <li class="dropdown notification-list">
+                    <a class="nav-link arrow-none waves-effect waves-light"  href="/logout" role="button" aria-haspopup="false" aria-expanded="false">
+                        <i class="mdi mdi-exit-to-app noti-icon"></i>
+                    </a>
+                </li>
+
+            </ul>
+
+            <ul class="list-inline menu-left mb-0">
+                <li class="float-left">
+                    <button class="button-menu-mobile open-left waves-effect waves-light">
+                        <i class="mdi mdi-menu"></i>
+                    </button>
+
+                </li>
+                <li class="d-none d-sm-block">
+                    <div class="dropdown pt-3 d-inline-block">
+                        <a class="btn btn-header waves-effect waves-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Create New
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="/admin/create/product">Product</a>
+                            <a class="dropdown-item" href="#">Banner</a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+        </nav>
+
+    </div>
+    <!-- Top Bar End -->
+    <!-- ========== Left Sidebar Start ========== -->
+    <div th:fragment="side-menu" class="left side-menu">
+        <div class="slimscroll-menu" id="remove-scroll">
+
+            <!--- Sidemenu -->
+            <div id="sidebar-menu">
+                <!-- Left Menu Start -->
+                <ul class="metismenu" id="side-menu">
+                    <li class="menu-title">Main</li>
+
+                    <li>
+                        <a href="/admin" class="waves-effect">
+                            <i class="fas fa-store-alt"></i> <span> Dashboard </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="javascript:void(0);" class="waves-effect">
+
+                            <i class="fas fa-th-list"></i>
+                            <span> Orders <span class="badge badge-pill badge-danger noti-icon-badge hidden " id="orderCount"></span>
+                            <span class="float-right menu-arrow"><i class="mdi mdi-plus"></i></span></span>
+                        </a>
+
+                        <ul class="submenu">
+                            <li><a href="/admin/search-orders">Search orders</a></li>
+                            <li><a href="/admin/new-orders" >Show new orders</a></li>
+                            <li><a href="#">--</a></li>
+                        </ul>
+                    </li>
+
+                    <!--<li>-->
+                        <!--<a href="/admin/items" class="waves-effect">-->
+                            <!--<i class="ion-search"></i> <span> Items </span>-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <li>
+                        <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-shopping-bag"></i><span> Products <span class="float-right menu-arrow"><i class="mdi mdi-plus"></i></span> </span></a>
+                        <ul class="submenu">
+                            <li><a href="/admin/items">Search products</a></li>
+                            <li><a href="/admin/create/product">New product</a></li>
+                            <li><a href="/admin/productCatalog">Product catalog</a></li>
+                            <li><a href="/admin/productCatalog">Product producer</a></li>
+                            <li><a href="/admin/productCatalog">Export data</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="javascript:void(0);" class="waves-effect"><i class="fas fa-images"></i><span> Banners <span class="float-right menu-arrow"><i class="mdi mdi-plus"></i></span> </span></a>
+                        <ul class="submenu">
+                            <li><a href="#">Main banner</a></li>
+                            <li><a href="#">---</a></li>
+                            <li><a href="#">--</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+
+            </div>
+            <!-- Sidebar -->
+            <div class="clearfix"></div>
+
+        </div>
+        <!-- Sidebar -left -->
+
+    </div>
+    <!-- Left Sidebar End -->
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="content-page">
+        <!-- Start content -->
+        <div class="content">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-title-box">
+                            <h4 class="page-title">Dashboard</h4>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item active">Welcome to Agroxa Dashboard</li>
+                            </ol>
+
+                            <div class="state-information d-none d-sm-block">
+                                <div class="state-graph">
+                                    <div id="header-chart-1"></div>
+                                    <div class="info">Balance $ 2,317</div>
+                                </div>
+                                <div class="state-graph">
+                                    <div id="header-chart-2"></div>
+                                    <div class="info">Item Sold 1230</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+
+                <div class="page-content-wrapper">
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-primary mini-stat position-relative">
+                                <div class="card-body">
+                                    <div class="mini-stat-desc">
+                                        <h6 class="text-uppercase verti-label text-white-50">Orders</h6>
+                                        <div class="text-white">
+                                            <h6 class="text-uppercase mt-0 text-white-50">Orders</h6>
+                                            <h3 class="mb-3 mt-0">1,587</h3>
+                                            <div class="">
+                                                <span class="badge badge-light text-info"> +11% </span> <span class="ml-2">From previous period</span>
+                                            </div>
+                                        </div>
+                                        <div class="mini-stat-icon">
+                                            <i class="mdi mdi-cube-outline display-2"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-primary mini-stat position-relative">
+                                <div class="card-body">
+                                    <div class="mini-stat-desc">
+                                        <h6 class="text-uppercase verti-label text-white-50">Revenue</h6>
+                                        <div class="text-white">
+                                            <h6 class="text-uppercase mt-0 text-white-50">Revenue</h6>
+                                            <h3 class="mb-3 mt-0">$46,785</h3>
+                                            <div class="">
+                                                <span class="badge badge-light text-danger"> -29% </span> <span class="ml-2">From previous period</span>
+                                            </div>
+                                        </div>
+                                        <div class="mini-stat-icon">
+                                            <i class="mdi mdi-buffer display-2"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-primary mini-stat position-relative">
+                                <div class="card-body">
+                                    <div class="mini-stat-desc">
+                                        <h6 class="text-uppercase verti-label text-white-50">Av. Price</h6>
+                                        <div class="text-white">
+                                            <h6 class="text-uppercase mt-0 text-white-50">Average Price</h6>
+                                            <h3 class="mb-3 mt-0">15.9</h3>
+                                            <div class="">
+                                                <span class="badge badge-light text-primary"> 0% </span> <span class="ml-2">From previous period</span>
+                                            </div>
+                                        </div>
+                                        <div class="mini-stat-icon">
+                                            <i class="mdi mdi-tag-text-outline display-2"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-primary mini-stat position-relative">
+                                <div class="card-body">
+                                    <div class="mini-stat-desc">
+                                        <h6 class="text-uppercase verti-label text-white-50">Pr. Sold</h6>
+                                        <div class="text-white">
+                                            <h6 class="text-uppercase mt-0 text-white-50">Product Sold</h6>
+                                            <h3 class="mb-3 mt-0">1890</h3>
+                                            <div class="">
+                                                <span class="badge badge-light text-info"> +89% </span> <span class="ml-2">From previous period</span>
+                                            </div>
+                                        </div>
+                                        <div class="mini-stat-icon">
+                                            <i class="mdi mdi-briefcase-check display-2"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end row -->
+
+
+
+                </div>
+                <!-- end page content-->
+
+            </div> <!-- container-fluid -->
+
+        </div> <!-- content -->
+
+
+        <footer class="footer">
+
+            © 2018 Agroxa <span class="d-none d-sm-inline-block">- Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand.</span>
+        </footer>
+
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Right content here -->
+    <!-- ============================================================== -->
+    </div>
+<!-- END wrapper -->
+
+
+<!-- jQuery  -->
+    <div th:fragment="js" th:remove="tag" >
+
+        <script src="/assets/js/jquery.min.js"></script>
+        <script src="/assets/js/bootstrap.bundle.min.js"></script>
+        <script src="/assets/js/metisMenu.min.js"></script>
+        <script src="/assets/js/jquery.slimscroll.js"></script>
+        <script src="/assets/js/waves.min.js"></script>
+        <script src="/assets/plugins/jquery-sparkline/jquery.sparkline.min.js"></script>
+        <!-- Peity JS -->
+        <script src="/assets/plugins/peity/jquery.peity.min.js"></script>
+        <script src="/assets/plugins/morris/morris.min.js"></script>
+        <script src="/assets/plugins/raphael/raphael-min.js"></script>
+        <script src="/assets/pages/dashboard.js"></script>
+        <script src="/assets/pages/sweet-alert.init.js"></script>
+        <!-- Sweet-Alert  -->
+        <script src="/assets/plugins/sweet-alert2/sweetalert2.min.js"></script>
+
+        <!-- App js -->
+        <script src="/assets/js/app.js"></script>
+        <!--<script src="/assets/pages/xeditable.js"></script>-->
+    </div>
+
+    </body>
+</html>>

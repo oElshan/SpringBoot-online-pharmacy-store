@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	  html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:replace="include :: head"> </div>
+
+	<body>
+		<div class="wrapper">
+			<!-- ============================================================= TOP NAVIGATION ============================================================= -->
+			<div th:replace="~{templates/topbar :: topbar}"></div>
+			<!-- ============================================================= TOP NAVIGATION : END ============================================================= -->
+
+			<!-- ============================================================= HEADER ============================================================= -->
+			<div th:replace="~{templates/header :: header}"></div>
+            <!-- ============================================================= HEADER : END ============================================================= -->
+
+            <!-- ========================================= HOME BANNERS ========================================= -->
+            <div id="top-banner-and-menu" >
+                <div class="container">
+                    <div class="col-xs-12 col-sm-4 col-md-3 sidemenu-holder">
+                        <!-- ================================== TOP NAVIGATION ================================== -->
+                        <div class="side-menu ">
+                            <div class="head"><i class="fa fa-list"></i> CATEGORIES </div>
+                            <nav class="yamm megamenu-horizontal " role="navigation">
+                                <ul class="nav">
+                                    <li class="dropdown menu-item" th:each="category:${#servletContext.getAttribute('CATEGORY_LIST')}">
+                                        <a href="#" class="dropdown-toggle tex" data-toggle="dropdown" th:text="${category.name}">Value of the Day</a>
+                                        <ul class="dropdown-menu row">
+                                            <li class=" col-md-6 row" th:each="subcategory:${#servletContext.getAttribute('SUBCATEGORY_LIST')}" th:if="${category.id == subcategory.category.id}" >
+                                                <!-- ================================== MEGAMENU VERTICAL ================================== -->
+                                                        <!--<ul class="row">-->
+                                                            <!--<li class="col-xs-12 col-lg-6 col-md-6">-->
+                                                                 <a class="col-md-12" th:href="${category.url+'/'+subcategory.url}" th:text="${subcategory.name}">Computer Cases &amp; Accessories</a>
+                                                            <!--</li>-->
+                                                        <!--</ul>-->
+                                                <!-- ================================== MEGAMENU VERTICAL ================================== -->
+                                            </li>
+                                        </ul>
+                                    </li><!-- /.menu-item -->
+
+                                </ul><!-- /.nav -->
+                            </nav><!-- /.megamenu-horizontal -->
+                        </div><!-- /.side-menu -->
+                        <!-- ================================== TOP NAVIGATION : END ================================== -->
+                    </div><!-- /.sidemenu-holder -->
+
+                    <div class="col-xs-12 col-sm-8 col-md-9 homebanner-holder hidden-xs">
+                        <!-- ========================================== SECTION – HERO ========================================= -->
+                        <div id="hero">
+                            <div id="owl-main" class="owl-carousel owl-inner-nav owl-ui-sm">
+
+                                <div class="item" style="background-image: url(/static/images/sliders/ekonom.jpg);">
+                                    <div class="container-fluid">
+                                        <div class="caption vertical-center text-left hidden-xs hidden-sm hidden-md">
+                                            <!--<div class="big-text fadeInDown-1">-->
+                                            <!--ekonom aptek-->
+                                            <!--</div>-->
+
+                                            <!--<div class="excerpt fadeInDown-2">-->
+                                            <!--on selected laptops<br>-->
+                                            <!--& desktop pcs or<br>-->
+                                            <!--smartphones-->
+                                            <!--</div>-->
+                                            <!--<div class="small fadeInDown-2">-->
+                                            <!--terms and conditions apply-->
+                                            <!--</div>-->
+                                        </div><!-- /.caption -->
+                                    </div><!-- /.container-fluid -->
+                                </div><!-- /.item -->
+
+                                <div class="item" style="background-image: url(/static/images/sliders/1.jpg);">
+                                    <div class="container-fluid">
+                                        <div class="caption vertical-center text-right">
+                                            <!--<div class="big-text fadeInDown-1">-->
+                                                <!--Want a<span class="big"><span class="sign">Azn</span>1</span>Discount?-->
+                                            <!--</div>-->
+
+                                            <!--<div class="excerpt fadeInDown-2">-->
+                                                <!--on selected <br>sale product<br>-->
+                                            <!--</div>-->
+                                            <!--<div class="button-holder fadeInDown-3">-->
+                                                <!--<a href="single-product.html" class="big le-button ">shop now</a>-->
+                                            <!--</div>-->
+                                        </div><!-- /.caption -->
+                                    </div><!-- /.container-fluid -->
+                                </div><!-- /.item -->
+
+                            </div><!-- /.owl-carousel -->
+                        </div>
+                        <!-- ========================================= SECTION – HERO : END ========================================= -->
+                    </div><!-- /.homebanner-holder -->
+                </div><!-- /.container -->
+            </div><!-- /#top-banner-and-menu -->
+            <!-- ========================================= HOME BANNERS : END ========================================= -->
+
+            <div id="products-tab" class="wow fadeInUp">
+                <div class="container">
+                    <div class="tab-holder">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" id="products-category" >
+                            <li th:class="${specCategory.id}==1?'active':''" th:each="specCategory : ${specCategoryList}" ><a th:href="|#speccat${specCategory.id}|" data-toggle="tab" id-speccategory="" th:attr="id-speccategory=${specCategory.id}"  th:text="${specCategory.name}">featured</a></li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content" id="products" th:include="~{fragment/products-list-home :: products}"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================= TOP BRANDS ========================================= -->
+            <section id="top-brands" class="wow fadeInUp">
+                <div class="container">
+                    <div class="carousel-holder" >
+
+                        <div class="title-nav">
+                            <h1>Top Brands</h1>
+                            <div class="nav-holder">
+                                <a href="#prev" data-target="#owl-brands" class="slider-prev btn-prev fa fa-angle-left"></a>
+                                <a href="#next" data-target="#owl-brands" class="slider-next btn-next fa fa-angle-right"></a>
+                            </div>
+                        </div><!-- /.title-nav -->
+
+                        <div id="owl-brands" class="owl-carousel brands-carousel">
+
+                            <div class="carousel-item">
+                                <a href="#">
+                                    <img alt="" src="/static/images/brands/brand-01.jpg" />
+                                </a>
+                            </div><!-- /.carousel-item -->
+
+                            <div class="carousel-item">
+                                <a href="#">
+                                    <img alt="" src="/static/images/brands/brand-02.jpg" />
+                                </a>
+                            </div><!-- /.carousel-item -->
+
+                            <div class="carousel-item">
+                                <a href="#">
+                                    <img alt="" src="/static/images/brands/brand-03.jpg" />
+                                </a>
+                            </div><!-- /.carousel-item -->
+
+                            <div class="carousel-item">
+                                <a href="#">
+                                    <img alt="" src="/static/images/brands/brand-04.jpg" />
+                                </a>
+                            </div><!-- /.carousel-item -->
+
+                            <div class="carousel-item">
+                                <a href="#">
+                                    <img alt="" src="/static/images/brands/brand-01.jpg" />
+                                </a>
+                            </div><!-- /.carousel-item -->
+
+                            <div class="carousel-item">
+                                <a href="#">
+                                    <img alt="" src="/static/images/brands/brand-02.jpg" />
+                                </a>
+                            </div><!-- /.carousel-item -->
+
+                            <div class="carousel-item">
+                                <a href="#">
+                                    <img alt="" src="/static/images/brands/brand-03.jpg" />
+                                </a>
+                            </div><!-- /.carousel-item -->
+
+                            <div class="carousel-item">
+                                <a href="#">
+                                    <img alt="" src="/static/images/brands/brand-04.jpg" />
+                                </a>
+                            </div><!-- /.carousel-item -->
+
+                        </div><!-- /.brands-caresoul -->
+
+                    </div><!-- /.carousel-holder -->
+                </div><!-- /.container -->
+            </section><!-- /#top-brands -->
+            <!-- ========================================= TOP BRANDS : END ========================================= -->
+
+            <!-- ============================================================= FOOTER ============================================================= -->
+			<div th:replace="~{templates/footer :: footer}"></div>
+
+            <!-- ============================================================= FOOTER : END ============================================================= -->
+        </div><!-- /.wrapper -->
+
+        <!-- JavaScripts placed at the end of the document so the pages load faster -->
+		<div th:replace="include::js"></div>
+	</body>
+</html>
+

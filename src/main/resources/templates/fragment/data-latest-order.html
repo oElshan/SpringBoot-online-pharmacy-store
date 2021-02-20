@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <div  th:fragment="data-latest-order">
+    <div class="col-xl-12 col-sm-12 col-md-12"  th:fragment="AjaxDataLatestOrder">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="mt-0 header-title mb-4">Latest Order</h4>
+                <div class="table-responsive order-table">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                        <tr>
+                            <th scope="col">(#) Id</th>
+                            <th scope="col">Client Name</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col" colspan="1">Status</th>
+                            <th scope="col" >Date created</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="order : ${orders}">
+                            <th scope="row" th:text="${order.id}">#14562</th>
+                            <td th:text="|${order.client.firstName} ${order.client.lastName}|">
+                                Matthew Drapeau
+                            </td>
+                            <td th:text="${order.client.phone}">
+                                Matthew Drapeau
+                            </td>
+                            <!--<td >17/8/2018-->
+                                <!--<p class="font-13 text-muted mb-0">8:26AM</p>-->
+                            <!--</td>-->
+                            <td th:text="${#arrays.length(order.orderItems)}">$104</td>
+                            <td >
+                                <!--<a href="#" class="inline-status" data-type="select" data-pk="1" data-value="" data-title="Select status" th:text="${order.status.name}"></a>-->
+
+                                <span class="badge  badge-info " th:text="${order.status.name}" th:class="${order.status.name}=='new'? 'badge  badge-danger':'badge  badge-info'"><i class="mdi mdi-checkbox-blank-circle text-primary"></i> new </span>
+                            </td>
+                            <td th:text="${order.created}">
+                                Matthew Drapeau
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm " th:id="${order.id}" data-toggle="modal" ><i class="ion-android-close"></i> Delete</button>
+                                <div  th:class="'modal fade '+${order.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <div class="alert alert-danger text-center h4" role="alert" th:text="|Delete order No ${order.id}?|">Are you sure?</div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a  class="btn btn-danger .delete-order"  th:href = "'/admin/orders/delete?id='+${order.id}">Yes</a>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+                            <td>
+                                <!--<a th:href="'/ajax/admin/edit-order?id='+${order.id}"  class="btn btn-link btn-sm"><i class="ion-edit" ></i> Edit</a>-->
+                                <a href="javascript:void(0)" order-id="" th:attr="order-id=${order.id}" class="btn btn-link btn-sm edit-order" ><i class="ion-edit" ></i> Edit</a>
+
+                                    <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">Extra large modal</button>-->
+
+                                    <div id="edit-order-modal"> </div>
+
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <nav aria-label="...">
+                    <ul class="pagination justify-content-center" id="orders-pagination" th:if="${clientOrdersPage.totalPages > 0}" >
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                        <li th:each="pageNumber : ${pageNumbers}" th:class="${pageNumber==clientOrdersPage.number + 1} ? 'page-item active' : page-item">
+                            <a class="page-link" page-number = "" th:attr="page-number=${pageNumber}" th:text="${pageNumber}" href="javascript:void(0)" >1</a>
+                        </li>
+                        <li class="page-item disabled" >
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

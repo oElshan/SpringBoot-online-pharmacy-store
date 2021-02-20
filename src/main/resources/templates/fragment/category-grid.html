@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:fragment="categories" class="container" >
+
+    <div class="panel panel-default">
+        <!-- Содержание панели по умолчанию -->
+        <div class="panel-heading" >
+        <h4 th:text="${category.name}"></h4>
+        </div>
+        <div class="panel-body ">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <ul class="row">
+                        <li class="col-md-4" th:each="subCategory:${subcategories}" style="padding-bottom: 20px"><a class="h4" th:href="@{(${category.url+'/'+subCategory.url})}"   th:text="${subCategory.name}"></a></li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+            </div>
+
+        </div>
+
+        <!-- Группы списков -->
+
+    </div>
+            <!--<ul class="list-group list-group-horizontal" >-->
+                <!--<li class="list-group-item col-sm-3" th:each=" subCategory:${subcategories}">-->
+                            <!--<a href="#"  th:text="${subCategory.name}">Переход куда-нибудь</a>-->
+                <!--</li>-->
+            <!--</ul>-->
+
+
+
+</div><!-- /.top-cart-holder -->
+
+</html>

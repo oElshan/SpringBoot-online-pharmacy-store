@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:replace="include :: head"> </div>
+
+	<body>
+		<div class="wrapper">
+			<!-- ============================================================= TOP NAVIGATION ============================================================= -->
+            <div th:replace="~{templates/topbar :: topbar}"></div>
+
+            <!-- ============================================================= TOP NAVIGATION : END ============================================================= -->
+
+			<!-- ============================================================= HEADER ============================================================= -->
+            <div th:replace="~{templates/header :: header}"></div>
+
+            <!-- ============================================================= HEADER : END ============================================================= -->
+
+            <div class="animate-dropdown">
+                <!-- ========================================= BREADCRUMB ========================================= -->
+                <div id="top-mega-nav">
+                    <div class="container">
+                        <nav>
+                            <ul class="inline">
+                                <li class="breadcrumb-nav-holder">
+                                    <ul>
+                                        <li class="breadcrumb-item">
+                                            <a href="index2.html">Home</a>
+                                        </li>
+                                        <li class="breadcrumb-item current gray">
+                                            <a href="about.html">Authentication</a>
+                                        </li>
+                                    </ul>
+                                </li><!-- /.breadcrumb-nav-holder -->
+                            </ul>
+                        </nav>
+                    </div><!-- /.container -->
+                </div><!-- /#top-mega-nav -->
+                <!-- ========================================= BREADCRUMB : END ========================================= -->
+            </div>
+
+            <!-- ========================================= MAIN ========================================= -->
+            <main id="authentication" class="inner-bottom-md">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-md-6 col-md-offset-3">
+                            <section class="section sign-in inner-right-xs">
+                                <h2 class="bordered">Sign In</h2>
+                                <p>Hello, Welcome to your account</p>
+
+
+                                <form role="form" class="login-form cf-style-1" th:action="@{/login}" method="post" >
+                                    <p th:if="${loginError}" class="alert-danger">Wrong user or password</p>
+                                    <div class="field-row">
+                                        <label>Login</label>
+                                        <input type="text" class="le-input" name="username" autofocus="autofocus" >
+                                    </div><!-- /.field-row -->
+
+                                    <div class="field-row">
+                                        <label>Password</label>
+                                        <input type="text" class="le-input" name="password">
+                                    </div><!-- /.field-row -->
+
+                                    <div class="field-row clearfix">
+                                        <span class="pull-left">
+                                            <label class="content-color"><input type="checkbox" class="le-checbox auto-width inline" name="remember-me" > <span class="bold">Remember me</span></label>
+                                        </span>
+                                        <span class="pull-right">
+                                            <a href="#" class="content-color bold">Forgotten Password ?</a>
+                                        </span>
+                                    </div>
+
+                                    <div class="buttons-holder">
+                                        <button type="submit" class="le-button huge">Secure Sign In</button>
+                                    </div><!-- /.buttons-holder -->
+                                </form><!-- /.cf-style-1 -->
+
+                            </section><!-- /.sign-in -->
+                        </div><!-- /.col -->
+
+                    </div><!-- /.row -->
+                </div><!-- /.container -->
+            </main><!-- /.authentication -->
+            <!-- ========================================= MAIN : END ========================================= -->
+
+            <!-- ============================================================= FOOTER ============================================================= -->
+            <div th:replace="~{templates/footer :: footer}"></div>
+            <!-- ============================================================= FOOTER : END ============================================================= -->
+        </div><!-- /.wrapper -->
+
+        <!-- JavaScripts placed at the end of the document so the pages load faster -->
+        <div th:replace="include::js"></div>
+    </body>
+</html>

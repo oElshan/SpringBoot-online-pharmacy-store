@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <div th:fragment="products" id="productsAjax">
+        <div  class="tab-pane active" th:id="|speccat${specCategory.id}|" >
+            <div class="product-grid-holder" th:each="product : ${products}" >
+                <div class="col-xs-6 col-sm-3 col-md-2  no-margin product-item-holder hover">
+                    <div class="product-item" >
+                        <div class="image">
+                            <img alt="" src="/static/images/blank.gif" data-echo="/static/images/products/fuflomicin256*186.jpg" />
+                        </div>
+                        <div class="body">
+                            <div class="title">
+                                <a href="single-product.html" th:text="${product.name}">VAIO Fit Laptop - Windows 8 SVF14322CXW</a>
+                            </div>
+                            <div class="brand">Bayer</div>
+                        </div>
+                        <div class="prices">
+                            <div class="price-current pull-right" th:text="|${product.price} AZN|">$1199.00</div>
+                        </div>
+
+                        <div class="hover-area">
+                            <div class="add-cart-button">
+                                <a href = "javascript:void(0);" class="le-button " th:id="|add-${product.id}|" data-product_id="" th:attr="data-product_id=${product.id}">add to cart</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="loadmore-holder text-center">
+                <a class="btn-loadmore" href="#">
+                    <i class="fa fa-plus"></i>
+                    load more products</a>
+            </div>
+        </div>
+
+    </div>
+
+</html>

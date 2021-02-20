@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <div th:fragment="order-complete" >
+        <div class="container">
+            <div class="col-xs-8 col-lg-offset-2 ">
+
+                <div class="billing-address">
+                    <h2 class="border h1">Your order is accepted!</h2>
+
+                </div><!-- /.billing-address -->
+
+                <section id="your-order" th:object="${clientOrder}">
+                    <h2 class="border h1" th:text="|Your order: № *{id}|">Your order </h2>
+                    <div >
+                        <div class="row no-margin order-item"  th:each="items : *{orderItems}">
+                            <div class="col-xs-12 col-sm-1 no-margin">
+                                <a href="#" class="qty" th:text="|${items.count} x|" >1 x</a>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-9 ">
+                                <div class="title"><a href="#" th:text="${items.product.name}" >white lumia 9001 </a></div>
+                                <div class="brand" >Bayer</div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-2 no-margin">
+                                <div class="price" th:text="|${items.product.price} Azn|" >$2000.00</div>
+                            </div>
+                        </div><!-- /.order-item -->
+
+                    </div>
+                </section><!-- /#your-order -->
+
+                <div id="total-area" class="row no-margin" >
+                    <div class="col-xs-12 col-lg-4 col-lg-offset-8 no-margin-right">
+                        <div id="subtotal-holder">
+                            <ul id="total-field" class="tabled-data inverse-bold ">
+                                <li>
+                                    <label>order total</label>
+                                    <div class="value" th:text="|${totalCost} Azn|">$8434.00</div>
+                                </li>
+                            </ul><!-- /.tabled-data -->
+
+                        </div><!-- /#subtotal-holder -->
+                    </div><!-- /.col -->
+                </div><!-- /#total-area -->
+
+
+
+            </div><!-- /.col -->
+        </div><!-- /.container -->
+
+
+    </div>
+
+</html>

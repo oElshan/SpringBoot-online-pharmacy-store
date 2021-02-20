@@ -1,0 +1,18 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <div th:fragment="producer-list" id="producer-list" >
+        <ul >
+             <li th:each="producer:${producers}" >
+                 <input th:if="${filterProducersIdSet == null}"  class="le-checkbox producer-filter" type="checkbox" name="producers" th:value="${producer.id}" ><i class="fake-box"></i>
+                 <input th:if="${filterProducersIdSet != null}"  class="le-checkbox producer-filter" type="checkbox" name="producers" th:value="${producer.id}" th:checked="${#sets.contains(filterProducersIdSet, producer.id)}"><i class="fake-box"></i>
+                 <span  th:text= "${producer.name}">Samsung</span>
+                 <hr>
+             </li>
+         </ul>
+    </div>
+
+
+</html>

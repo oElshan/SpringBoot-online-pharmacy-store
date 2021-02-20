@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <div th:fragment="checkout" >
+        <div class="container">
+            <div class="col-xs-8 col-lg-offset-2 ">
+
+                <div class="billing-address">
+                    <h2 class="border h1">billing address</h2>
+
+                    <form  th:object="${orderForm}"   method="post" id="orderForm" >
+                        <div class="row field-row">
+                            <div class="col-xs-12 col-sm-6">
+                                <label>First name*</label>
+                                <input class="le-input" name="firstName" type="text"  th:field="*{firstName}">
+                                <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="alert alert-danger" >Error field</p>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-6">
+                                <label>Last name*</label>
+                                <input class="le-input" name="lastName" type="text" th:field="*{lastName}">
+                                <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="alert alert-danger" >Error field</p>
+
+                            </div>
+                        </div><!-- /.field-row -->
+
+
+                        <div class="row field-row">
+                            <div class="col-xs-12 col-sm-6">
+                                <label>address*</label>
+                                <input class="le-input" data-placeholder="street address" name="streetAddress" type="text" th:field="*{streetAddress}" >
+                                <p th:if="${#fields.hasErrors('streetAddress')}" th:errors="*{streetAddress}" class="alert alert-danger" >Error field</p>
+
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                <label>&nbsp;</label>
+                                <input class="le-input" data-placeholder="town" name="town" type="text" th:field="*{town}" >
+                                <p th:if="${#fields.hasErrors('town')}" th:errors="*{town}" class="alert alert-danger" >Error field</p>
+
+                            </div>
+                        </div><!-- /.field-row -->
+
+                        <div class="row field-row">
+                            <div class="col-xs-12 col-sm-4">
+                                <label>postcode / Zip*</label>
+                                <input class="le-input"  name="zipCode" type="text" th:field="*{zipCode}">
+                                <p th:if="${#fields.hasErrors('zipCode')}" th:errors="*{zipCode}" class="alert alert-danger" >Error field</p>
+
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <label>email address*</label>
+                                <input class="le-input" name="email" type="text" th:field="*{email}" >
+                                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="alert alert-danger" >Error field</p>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-4">
+                                <label>phone number*</label>
+                                <input class="le-input" name="phone" type="text" th:field="*{phone}">
+                                <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="alert alert-danger" >Error field</p>
+                            </div>
+                        </div><!-- /.field-row -->
+
+                    </form>
+                </div><!-- /.billing-address -->
+
+                <section id="your-order" >
+                    <h2 class="border h1">your order</h2>
+                    <div th:object="${#session.getAttribute('CURRENT_SHOPPING_CART')}">
+                        <div class="row no-margin order-item"  th:each="product :*{products}">
+                            <div class="col-xs-12 col-sm-1 no-margin">
+                                <a href="#" class="qty" th:text="|${product.value.count} x|" >1 x</a>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-9 ">
+                                <div class="title"><a href="#" th:text="${product.value.product.name}" >white lumia 9001 </a></div>
+                                <div class="brand" >Bayer</div>
+                            </div>
+
+                            <div class="col-xs-12 col-sm-2 no-margin">
+                                <div class="price" th:text="|${product.value.product.price} Azn|" >$2000.00</div>
+                            </div>
+                        </div><!-- /.order-item -->
+
+                    </div>
+                </section><!-- /#your-order -->
+
+                <div id="total-area" class="row no-margin" >
+                    <div class="col-xs-12 col-lg-4 col-lg-offset-8 no-margin-right">
+                        <div id="subtotal-holder">
+                            <!--<ul class="tabled-data inverse-bold no-border">-->
+                            <!--<li>-->
+                            <!--<label>cart subtotal</label>-->
+                            <!--<div class="value ">$8434.00</div>-->
+                            <!--</li>-->
+                            <!--<li>-->
+                            <!--<label>shipping</label>-->
+                            <!--<div class="value">-->
+                            <!--<div class="radio-group">-->
+                            <!--<input class="le-radio" type="radio" name="group1" value="free"> <div class="radio-label bold">free shipping</div><br>-->
+                            <!--<input class="le-radio" type="radio" name="group1" value="local" checked>  <div class="radio-label">local delivery<br><span class="bold">$15</span></div>-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <!--</li>-->
+                            <!--</ul>&lt;!&ndash; /.tabled-data &ndash;&gt;-->
+
+                            <ul id="total-field" class="tabled-data inverse-bold ">
+                                <li>
+                                    <label>order total</label>
+                                    <div class="value" th:text="${totalCost}">$8434.00</div>
+                                </li>
+                            </ul><!-- /.tabled-data -->
+
+                        </div><!-- /#subtotal-holder -->
+                    </div><!-- /.col -->
+                </div><!-- /#total-area -->
+
+
+                <div class="place-order-button">
+                    <button class="le-button big" id="btnOrderForm">place order</button>
+                </div><!-- /.place-order-button -->
+
+            </div><!-- /.col -->
+        </div><!-- /.container -->
+
+
+    </div>
+
+</html>

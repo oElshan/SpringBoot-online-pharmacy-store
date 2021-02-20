@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div class="col-xl-12" th:fragment="data-table-orders">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="mt-0 header-title mb-4">List Orders</h4>
+            </div>
+            <div class="table-responsive order-table">
+                <table class="table table-hover mb-0">
+                    <thead>
+                    <tr>
+                        <th scope="col">(#) Id</th>
+                        <th scope="col">Name client</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Total cost</th>
+                        <th scope="col">Address</th>
+                        <th scope="col" colspan="2">Status</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+
+                    </tr>
+                    </thead>
+                    <tbody th:each="order:${orders}" th:with="totalCost = 0">
+                    <tr>
+                        <th scope="row" th:text="${order.id}">#14562</th>
+                        <td th:text="|${order.client.firstName} ${order.client.lastName} |">item</td>
+                        <td th:text="${order.client.phone}">phone</td>
+
+                        <!--<th:block th:each="item : ${order.orderItems}" >-->
+                            <!--&lt;!&ndash;<td th:text="${#lists.size(order.orderItems)}">$104</td>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div th:with="totalCost= ${totalCost + item.product.price}">&ndash;&gt;-->
+                                <!--<td th:text="${totalCost+item.product.price}">$104</td>-->
+
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+                        <!--</th:block>-->
+                        <td th:text="${#lists.size(order.orderItems)}">count</td>
+                        <td th:text="|${order.client.town} ${order.client.streetAddress} |">count</td>
+                        <!--<td th:text="${order.price}">$104</td>-->
+                        <td>
+                            <span class="badge  badge-info " th:text="${order.status.name}" th:class="${order.status.name}=='new'? 'badge  badge-danger':'badge  badge-info'"><i class="mdi mdi-checkbox-blank-circle text-primary"></i> new </span>
+
+                            <!--<td><span  th:if="${order.status.name}==completed and closed" th:class="badge badge-primary" ><i class="mdi mdi-checkbox-blank-circle text-primary"></i> new </span></td>-->
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm " th:id="${order.id}" data-toggle="modal" ><i class="ion-android-close"></i> Delete</button>
+                            <div  th:class="'modal fade '+${order.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div class="alert alert-danger text-center h4" role="alert" th:text="|Delete order No ${order.id}?|">Are you sure?</div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a  class="btn btn-danger .delete-order"  th:href = "'/admin/orders/delete?id='+${order.id}">Yes</a>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <!--<a th:href="'/ajax/admin/edit-order?id='+${order.id}"  class="btn btn-link btn-sm"><i class="ion-edit" ></i> Edit</a>-->
+                            <a href="javascript:void(0)" order-id="" th:attr="order-id=${order.id}" class="btn btn-link btn-sm edit-order"><i class="ion-edit" ></i> Edit</a>
+
+                            <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">Extra large modal</button>-->
+
+                            <div id="edit-order-modal"> </div>
+
+
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!--<div  >-->
+            <!--<thead>-->
+            <!--<tr>-->
+                <!--<th>id</th>-->
+                <!--<th>Name</th>-->
+                <!--<th>price</th>-->
+                <!--<th>Age</th>-->
+                <!--<th>Start date</th>-->
+                <!--<th>Salary</th>-->
+            <!--</tr>-->
+            <!--</thead>-->
+
+
+            <!--<tbody th:each="product:${products}">-->
+            <!--<tr>-->
+                <!--<td th:text="${product.id}">Tiger Nixon</td>-->
+                <!--<td th:text="${product.name}">System Architect</td>-->
+                <!--<td th:text="${product.price}">Edinburgh</td>-->
+                <!--<td>61</td>-->
+                <!--<td>2011/04/25</td>-->
+                <!--<td>$320,800</td>-->
+            <!--</tr>-->
+
+            <!--</tbody>-->
+
+
+    <!--</div>&lt;!&ndash; /.top-cart-holder &ndash;&gt;-->
+
+</html>

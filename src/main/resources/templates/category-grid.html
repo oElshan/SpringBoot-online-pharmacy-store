@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:replace="include :: head"> </div>
+
+<body>
+<div class="wrapper">
+    <!-- ============================================================= TOP NAVIGATION ============================================================= -->
+    <div th:replace="~{templates/topbar :: topbar}"></div>
+    <!-- ============================================================= TOP NAVIGATION : END ============================================================= -->
+
+    <!-- ============================================================= HEADER ============================================================= -->
+    <div th:replace="~{templates/header :: header}"></div>
+
+    <!-- ============================================================= HEADER : END ============================================================= -->
+    <div th:replace="~{fragment/category-product :: category-product}"></div>
+
+
+    <div th:replace="~{fragment/category-grid :: categories}"></div>
+
+    <!-- ============================================================= FOOTER ============================================================= -->
+    <div th:replace="~{templates/footer :: footer}"></div>
+
+    <!-- ============================================================= FOOTER : END ============================================================= -->
+</div><!-- /.wrapper -->
+
+<!-- JavaScripts placed at the end of the document so the pages load faster -->
+<div th:replace="include::js"></div>
+</body>
+</html>

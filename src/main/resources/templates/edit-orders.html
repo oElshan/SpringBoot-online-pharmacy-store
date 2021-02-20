@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <head th:replace="~{templates/admin/adminTempl :: head}"> </head>
+
+    <body>
+    <!-- Begin page -->
+    <div id="wrapper">
+        <!-- Top Bar Start -->
+        <div th:replace="~{templates/admin/adminTempl :: topbar}"> </div>
+        <!-- Top Bar End -->
+        <!-- ========== Left Sidebar Start ========== -->
+        <div th:replace="~{templates/admin/adminTempl :: side-menu}"> </div>
+            <!-- Left Sidebar End -->
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+            <div class="content-page">
+                <!-- Start content -->
+                <div class="content">
+                    <div class="container-fluid">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="page-title-box">
+                                    <h4 class="page-title">Edit product</h4>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end row -->
+
+                        <div class="page-content-wrapper">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card m-b-20">
+                                        <div class="card-body">
+            
+                                            <h4 class="mt-0 header-title text-primary" th:text="|Edit product: ${editProduct.name}|">Textual inputs</h4>
+
+                                            <form  action="/admin/edit-product" method="post"  enctype="multipart/form-data" th:object="${editProductForm}">
+
+                                                <div class="form-group hidden row">
+                                                    <div class="col-sm-10">
+                                                        <input class="form-control" name="id" type="hidden"  th:value="${editProduct.id}">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="name" class="col-sm-2 col-form-label">Name</label>
+                                                    <div class="col-sm-10">
+                                                        <input class="form-control" name="productName" type="text" th:name="productName" th:value="${editProduct.name}" id="name" >
+                                                        <p th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}" class="alert alert-danger" >Error field</p>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="producer" class="col-sm-2 col-form-label">Producer</label>
+                                                    <div class="col-sm-10">
+                                                        <input class="form-control" type="text" name="producer" th:if="${editProduct.producer}!=null" th:value="${editProduct.producer.name}" id="producer">
+                                                        <input class="form-control" type="text" name="producer" th:if="${editProduct.producer}==null" id="producer">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="price" class="col-sm-2 col-form-label">Price(Azn)</label>
+                                                    <div class="col-sm-10">
+                                                        <input class="form-control" name="price" type="text" th:value="${editProduct.price}" id="price" th:field="${editProduct.price}">
+                                                        <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="alert alert-danger" >Error field</p>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="elm1" class="col-sm-2 col-form-label">Description</label>
+                                                    <div class="col-sm-10">
+                                                        <!--<input class="form-control" id="elm1" name="area" type="search"  id="description">-->
+                                                        <textarea id="elm1" name="description" th:value="${editProduct.description}"></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="date" class="col-sm-2 col-form-label">Date</label>
+                                                    <div class="col-sm-10">
+                                                        <input class="form-control" type="text" name="dateCreation" placeholder="Date" id="date">
+                                                    </div>
+                                                    <!-- input-group -->
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label">Catalog(Category)</label>
+                                                    <div class="col-sm-10">
+                                                        <select class="form-control" name="category" >
+                                                            <option th:each="category:${#servletContext.getAttribute('CATEGORY_LIST')}" th:value="${category.name}" th:text="${category.name}"
+                                                                    <!--th:selected="${category.name==editProduct.subcategory.name?true:false}"-->
+                                                            >Select</option>
+                                                            <!--<option th:each="category:${#servletContext.getAttribute('CATEGORY_LIST')}"-->
+                                                             <!--th:text="${category.name==editProduct.subcategory}?${editProduct.subcategory}:${category.name}"-->
+                                                            <!--&gt;Select</option>-->
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label">Special Category</label>
+                                                    <div class="col-sm-10">
+                                                        <select class="form-control" name="specCategory">
+                                                            <option th:each="category:${specCategoryList}" th:value="${category.name}" th:text="${category.name}"
+                                                                    th:selected="${category.name==editProduct.specCategory.name?true:false}"
+                                                            >Select</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label">Visible</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="checkbox" id="switch1" name="visible" switch="none" checked/>
+                                                        <label for="switch1" data-on-label="On"
+                                                               data-off-label="Off"></label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="photo" class="col-sm-2 col-form-label">Product photo</label>
+                                                    <div class="col-sm-10">
+                                                        <!--<h4 class="mt-0 header-title">Photo product</h4>-->
+
+                                                        <div class="m-b-30">
+                                                                <div class="fallback">
+                                                                    <input id="photo" name="photo" type="file" multiple="multiple" >
+                                                                </div>
+                                                        </div>
+
+                                                        <!--<input class="form-control form-control-sm" type="text" placeholder=".form-control-sm" id="example-text-input-sm">-->
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-center m-t-15">
+                                                 <button type="submit"  class="btn btn-primary waves-effect waves-light">Send Files</button>
+                                                </div>
+                                            </form>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>  <!-- end col -->
+                            </div> <!-- end row -->
+            
+                        </div>
+                        <!-- end page content-->
+
+                    </div> <!-- container-fluid -->
+
+                </div> <!-- content -->
+
+                <footer class="footer">
+                    © 2020 ekonom aptek <span class="d-none d-sm-inline-block">- Crafted with <i class="mdi mdi-heart text-danger"></i> by oelshan.</span>
+                </footer>
+
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Right content here -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- END wrapper -->
+
+
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/metisMenu.min.js"></script>
+    <script src="/assets/js/jquery.slimscroll.js"></script>
+    <script src="/assets/js/waves.min.js"></script>
+
+    <script src="/assets/plugins/jquery-sparkline/jquery.sparkline.min.js"></script>
+    <script src="/assets/plugins/bootstrap-md-datetimepicker/js/moment-with-locales.min.js"></script>
+    <script src="/assets/plugins/bootstrap-md-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+    <script src="/assets/pages/form-advanced.js"></script>
+
+    <script src="/assets/plugins/dropzone/dist/dropzone.js"></script>
+
+
+    <!--Wysiwig js-->
+    <script src="/assets/plugins/tinymce/tinymce.min.js"></script>
+
+
+    <!-- App js -->
+    <script src="/assets/js/app.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#date').bootstrapMaterialDatePicker({ weekStart : 0, time: false });
+
+            if($("#elm1").length > 0){
+                tinymce.init({
+                    selector: "textarea#elm1",
+                    theme: "modern",
+                    height:300,
+                    plugins: [
+                        "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
+                        "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+                        "save table contextmenu directionality emoticons template paste textcolor"
+                    ],
+                    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons",
+                    style_formats: [
+                        {title: 'Bold text', inline: 'b'},
+                        {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                        {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                        {title: 'Example 1', inline: 'span', classes: 'example1'},
+                        {title: 'Example 2', inline: 'span', classes: 'example2'},
+                        {title: 'Table styles'},
+                        {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+                    ]
+                });
+            }
+        });
+    </script>
+
+
+    </body>
+
+</html>

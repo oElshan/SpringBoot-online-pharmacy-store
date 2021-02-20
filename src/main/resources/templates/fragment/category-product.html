@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <div th:fragment="category-product">
+        <div class="animate-dropdown ">
+            <!-- ========================================= BREADCRUMB ========================================= -->
+            <div id="top-mega-nav" >
+                <div class="container">
+                    <nav>
+                        <ul class="inline">
+                            <li class="dropdown le-dropdown">
+                                <a href="#" class="dropdown-toggle tex" data-toggle="dropdown">
+                                    <i class="fa fa-list"></i> Shop by Department
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <!---->
+                                    <!---->
+                                    <li  th:each="category:${#servletContext.getAttribute('CATEGORY_LIST')}">
+                                        <a th:href="${category.url}"  th:text="${category.name}">Computer Cases &amp; Accessories</a>
+                                        <!--<a class="dropdown-item" th:text="${category.name}">Computer Cases &amp; Accessories</a>-->
+                                        <ul class="dropdown-menu">
+                                            <li class="yammcontent">
+                                                <!-- ================================== MEGAMENU VERTICAL ================================== -->
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-lg-6 col-md-6">
+                                                        <ul>
+                                                            <li th:each="subcategory:${#servletContext.getAttribute('SUBCATEGORY_LIST')}" th:if="${category.id == subcategory.category.id}"><a th:href="${subcategory.url}" th:text="${subcategory.name}">Computer Cases &amp; Accessories</a></li>
+                                                        </ul>
+                                                    </div>
+
+                                                </div>
+                                                <!-- ================================== MEGAMENU VERTICAL ================================== -->
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                </ul>
+                            </li>
+
+                            <li class="breadcrumb-nav-holder">
+                                <ul>
+                                    <li class="breadcrumb-item current gray">
+                                        <a href="#" th:text="${breadcrumb}"></a>
+                                    </li>
+                                </ul>
+                            </li><!-- /.breadcrumb-nav-holder -->
+                        </ul>
+                    </nav>
+                </div><!-- /.container -->
+            </div><!-- /#top-mega-nav -->
+
+            <!-- ========================================= BREADCRUMB : END ========================================= -->
+        </div>
+
+
+    </div><!-- /.top-cart-holder -->
+
+</html>
