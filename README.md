@@ -3,8 +3,7 @@
 <h2>Технологии</h2>
 
 <ul class="discharged">
-    <li>JDK 1.8+</li>
-    <li>сервлет: Spring Boot (v2.3.8), Thymeleaf</li>
+    <li>JDK 1.8, Spring Boot (v2.3.8), Thymeleaf</li>
     <li>авторизация пользователей: Spring Security</li>
     <li>доступ к данным: Hibernate, Spring Data JPA</li>
     <li>веб-служба в стиле REST в процессе разработки </li>
