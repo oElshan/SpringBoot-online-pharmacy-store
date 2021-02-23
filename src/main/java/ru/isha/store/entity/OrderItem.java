@@ -1,16 +1,18 @@
 package ru.isha.store.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "order_item")
-public class OrderItem {
+public class OrderItem implements Serializable {
+
+    private static final long serialVersionUID = -96906528035960314L;
     private Long id;
     private int count;
     private ClientOrder clientOrder;
     private Product product;
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

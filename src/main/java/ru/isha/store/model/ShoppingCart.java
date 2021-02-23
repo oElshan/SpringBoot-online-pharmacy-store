@@ -12,6 +12,7 @@ import java.util.Map;
 
 public class ShoppingCart implements Serializable {
 
+    private static final long serialVersionUID = 7515264838799370547L;
     private Map<Long, ShoppingCartItem> products = new LinkedHashMap<>();
 
     @JsonView(Views.Public.class)

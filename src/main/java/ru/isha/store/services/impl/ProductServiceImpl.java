@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,27 +28,33 @@ import java.util.stream.Collectors;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
-    ProductRepo productRepo;
+    private ProductRepo productRepo;
+
+    private ProducerRepo producerRepo;
+
+    private SubCategoryRepo subCategoryRepo;
+
+    private CategoryRepo categoryRepo;
+
+    private SpecCategoryRepo specCategoryRepo;
+
+
+    public ProductServiceImpl(ProductRepo productRepo, ProducerRepo producerRepo, SubCategoryRepo subCategoryRepo,
+                              CategoryRepo categoryRepo, SpecCategoryRepo specCategoryRepo) {
+        this.productRepo = productRepo;
+        this.producerRepo = producerRepo;
+        this.subCategoryRepo = subCategoryRepo;
+        this.categoryRepo = categoryRepo;
+        this.specCategoryRepo = specCategoryRepo;
+    }
 
     @Autowired
-    ProducerRepo producerRepo;
-
-    @Autowired
-    SubCategoryRepo subCategoryRepo;
-
-    @Autowired
-    CategoryRepo categoryRepo;
-
-    @Autowired
-    SpecCategoryRepo specCategoryRepo;
-    @Autowired
-    Environment env;
+    private Environment env;
 
     @Override
-    public Page<Product> findAllProductByCategoryURL(String categoryName, int page, int limit) {
+    public Page<Product> findAllProductBySubCategoryURL(String categoryName, Pageable pageable) {
 
-        return productRepo.findBySubcategory_Url(categoryName, PageRequest.of(page-1,limit));
+        return productRepo.findBySubcategory_Url(categoryName, pageable);
     }
 
     @Override
@@ -56,7 +63,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<SpecCategory> listAllSpecCategory() {
+    public List<SpecCategory> findAllSpecCategory() {
         return specCategoryRepo.findAll();
     }
     @Override
@@ -69,8 +76,9 @@ public class ProductServiceImpl implements ProductService {
         return subCategoryRepo.findAll();
     }
 
-    public List<Product> listAllProductsForSpecCategory(int id,int page, int limit) {
-      return  productRepo.findBySpecCategory_Id(id, PageRequest.of(page - 1, limit)).getContent();
+    public List<Product> listAllProductsBySpecCategory(int id, Pageable pageable) {
+
+        return productRepo.findBySpecCategory_Id(id, pageable).getContent();
     }
 
     @Override
@@ -84,29 +92,30 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findProductBySearch(String name, BigDecimal[] price, Set<Long> producers, int page, int limit) {
+    public Page<Product> findProductBySearch(String name, BigDecimal[] price, Set<Long> producers, Pageable pageable) {
 
         if (price == null && producers == null) {
 
-            return productRepo.findByNameLike(name, PageRequest.of(page - 1, limit));
+            return productRepo.findByNameLike(name, pageable);
 
         } else if (price != null && producers == null) {
 
-            return productRepo.findByNameContainingAndPriceBetween(name, price[0], price[1], PageRequest.of(page - 1, limit));
+            return productRepo.findByNameContainingAndPriceBetween(name, price[0], price[1], pageable);
 
         } else if (price == null && producers != null) {
 
-            return productRepo.findByNameContainingAndProducer_IdIn(name,  producers, PageRequest.of(page - 1, limit));
+            return productRepo.findByNameContainingAndProducer_IdIn(name,  producers, pageable);
 
         } else {
-            return productRepo.findByNameContainingAndPriceBetweenAndProducer_IdIn(name, price[0], price[1], producers, PageRequest.of(page - 1, limit));
+            return productRepo.findByNameContainingAndPriceBetweenAndProducer_IdIn(name, price[0], price[1],
+                    producers, pageable);
         }
 
     }
 
     @Override
     public List<Product> findByNameContaining(String name) {
-        return productRepo.findByNameContaining(name, PageRequest.of(1,5));
+        return productRepo.findByNameContaining(name);
     }
 
     @Override
@@ -155,15 +164,18 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public Map<String,BigDecimal> getMinMaxPriceProductByCategoryURL(String category) {
-        Map<String, BigDecimal> minMaxPrice = new HashMap<>();
-        List<BigDecimal[]> minMax = productRepo.minMaxPriceBySubCategory(category);
+    public Map<String,BigDecimal> getMinMaxPriceProductByCategoryURL(String subcategory) {
+        Map<String, BigDecimal> rangePrice = new HashMap<>();
+        List<BigDecimal[]> minMax = productRepo.minMaxPriceBySubCategory(subcategory);
         for (BigDecimal[] m : minMax) {
-            minMaxPrice.put("min", m[0]);
-            minMaxPrice.put("max", m[1]);
+            rangePrice.put("min", m[0]);
+            rangePrice.put("max", m[1]);
         }
-        return minMaxPrice;
+        List<BigDecimal> rangePriceBySubCategory = productRepo.getRangePriceBySubCategory(subcategory);
+        return rangePrice;
     }
+
+
 
     @Override
     public Map<String,BigDecimal> getMinMaxPriceProductBySearchName(String search) {

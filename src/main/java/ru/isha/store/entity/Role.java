@@ -1,12 +1,14 @@
 package ru.isha.store.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "role")
-public class Role {
+public class Role implements Serializable {
+    private static final long serialVersionUID = -6984119901308880806L;
     private Integer id;
     private String name;
     private List<Account> accounts;

@@ -50,7 +50,7 @@ public class ContextOnAppListener implements ApplicationListener<ApplicationRead
         servletContext.setAttribute(Constants.CATEGORY_LIST,productService.findAllCategory());
         servletContext.setAttribute(Constants.SUBCATEGORY_LIST, productService.findAllSubCategory());
         servletContext.setAttribute(Constants.PRODUCER_LIST, productService.findAllProducer());
-        servletContext.setAttribute(Constants.SPECCATEGORY_LIST, productService.listAllSpecCategory());
+        servletContext.setAttribute(Constants.SPECCATEGORY_LIST, productService.findAllSpecCategory());
 
     }
 }

@@ -1,18 +1,23 @@
 package ru.isha.store.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "subcategory")
-public class Subcategory {
+public class Subcategory implements Serializable {
+    private static final long serialVersionUID = -79115048079649640L;
     private Long id;
     private String name;
     private Integer count;
     private String url;
     private List<Product> products;
     private Category category;
+
+    public Subcategory() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,6 +78,63 @@ public class Subcategory {
     public void setUrl(String url) {
         this.url = url;
     }
+
+
+    public Subcategory(SubcategoryBuilder subcategoryBuilder) {
+        this.id = subcategoryBuilder.id;
+        this.name = subcategoryBuilder.name;
+        this.count = subcategoryBuilder.count;
+        this.url = subcategoryBuilder.url;
+        this.products = subcategoryBuilder.products;
+        this.category = subcategoryBuilder.category;
+    }
+
+    public static class SubcategoryBuilder {
+        private Long id;
+        private String name;
+        private Integer count;
+        private String url;
+        private List<Product> products;
+        private Category category;
+
+        public SubcategoryBuilder() {
+        }
+
+        public SubcategoryBuilder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public SubcategoryBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public SubcategoryBuilder setCount(Integer count) {
+            this.count = count;
+            return this;
+        }
+
+        public SubcategoryBuilder setUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        public SubcategoryBuilder setProducts(List<Product> products) {
+            this.products = products;
+            return this;
+        }
+
+        public SubcategoryBuilder setCategory(Category category) {
+            this.category = category;
+            return this;
+        }
+
+        public Subcategory build() {
+            return new Subcategory(this);
+        }
+    }
+
 
     @Override
     public boolean equals(Object o) {

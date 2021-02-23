@@ -1,6 +1,7 @@
 package ru.isha.store.controllers.client;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.isha.store.controllers.AbstractProductController;
 import ru.isha.store.entity.Product;
 import ru.isha.store.services.ProductService;
+import ru.isha.store.utils.Constants;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -35,7 +37,9 @@ public class ProductController extends AbstractProductController {
                                  Model model, HttpServletRequest request) {
 
         int currentPage = page.orElse(1);
-        Page<Product> productsPage = productService.findProductBySearch(search,price,producers,currentPage,12);
+
+        Page<Product> productsPage = productService.findProductBySearch(search,price,producers,
+                PageRequest.of(currentPage - 1, Constants.MAX_PRODUCTS_PER_HTML_PAGE));
         List<Product> products = productsPage.getContent();
         model.addAttribute("pageNumbers", pagination(productsPage));
         model.addAttribute("search", search);

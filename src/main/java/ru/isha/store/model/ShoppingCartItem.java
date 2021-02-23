@@ -2,8 +2,11 @@ package ru.isha.store.model;
 
 import ru.isha.store.entity.Product;
 
-public class ShoppingCartItem {
+import java.io.Serializable;
 
+public class ShoppingCartItem implements Serializable {
+
+    private static final long serialVersionUID = 1689073980159902317L;
     private Product product;
     private int count;
 

@@ -4,14 +4,15 @@ import com.fasterxml.jackson.annotation.JsonView;
 import ru.isha.store.utils.Views;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "product")
-public class Product {
+public class Product implements Serializable {
+    private static final long serialVersionUID = -7249074436745560142L;
     @JsonView(Views.Public.class)
     private Long id;
     @JsonView(Views.Public.class)
@@ -21,11 +22,13 @@ public class Product {
     private String imgLink;
     @JsonView(Views.Public.class)
     private BigDecimal price;
-    private List<OrderItem> items;
     private Producer producer;
     private SpecCategory specCategory;
     private String visible;
     private Date date;
+
+    public Product() {
+    }
 
     @Basic
     @Temporal(TemporalType.DATE)
@@ -90,15 +93,6 @@ public class Product {
         this.subcategory = subcategory;
     }
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    public List<OrderItem> getItems() {
-        return items;
-    }
-
-    public void setItems(List<OrderItem> items) {
-        this.items = items;
-    }
-
     @Basic
     @Column(name = "name")
     public String getName() {
@@ -140,19 +134,112 @@ public class Product {
         this.price = price;
     }
 
+    public Product( ProductBuilder productBuilder) {
+        this.id = productBuilder.id;
+        this.name = productBuilder.name;
+        this.subcategory = productBuilder.subcategory;
+        this.description = productBuilder.description;
+        this.imgLink = productBuilder.imgLink;
+        this.price = productBuilder.price;
+        this.producer = productBuilder.producer;
+        this.specCategory = productBuilder.specCategory;
+        this.visible = productBuilder.visible;
+        this.date = productBuilder.date;
+    }
+
+    public static class ProductBuilder {
+        private Long id;
+        private String name;
+        private Subcategory subcategory;
+        private String description;
+        private String imgLink;
+        private BigDecimal price;
+        private Producer producer;
+        private SpecCategory specCategory;
+        private String visible;
+        private Date date;
+
+        public ProductBuilder() {
+        }
+
+        public ProductBuilder setProducer(Producer producer) {
+            this.producer = producer;
+            return this;
+        }
+
+        public ProductBuilder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public ProductBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public ProductBuilder setSubcategory(Subcategory subcategory) {
+            this.subcategory = subcategory;
+            return this;
+        }
+
+        public ProductBuilder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public ProductBuilder setImgLink(String imgLink) {
+            this.imgLink = imgLink;
+            return this;
+        }
+
+        public ProductBuilder setPrice(BigDecimal price) {
+            this.price = price;
+            return this;
+        }
+
+        public ProductBuilder setSpecCategory(SpecCategory specCategory) {
+            this.specCategory = specCategory;
+            return this;
+        }
+
+        public ProductBuilder setVisible(String visible) {
+            this.visible = visible;
+            return this;
+        }
+
+        public ProductBuilder setDate(Date date) {
+            this.date = date;
+            return this;
+        }
+
+        public Product build() {
+            return  new Product(this);
+        }
+
+    }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return id.equals(product.id) &&
-                name.equals(product.name);
+        return Objects.equals(id, product.id) &&
+                Objects.equals(name, product.name) &&
+                Objects.equals(subcategory, product.subcategory) &&
+                Objects.equals(description, product.description) &&
+                Objects.equals(imgLink, product.imgLink) &&
+                Objects.equals(price, product.price) &&
+                Objects.equals(producer, product.producer) &&
+                Objects.equals(specCategory, product.specCategory) &&
+                Objects.equals(visible, product.visible) &&
+                Objects.equals(date, product.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, name, subcategory, description, imgLink,
+                price, producer, specCategory, visible, date);
     }
 
     @Override

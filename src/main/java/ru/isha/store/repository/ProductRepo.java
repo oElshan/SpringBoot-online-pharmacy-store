@@ -20,7 +20,11 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
 
     @Query(value = "SELECT min(price),max(price) FROM  product as p JOIN subcategory s on p.id_subcategory=s.id WHERE  s.url=?",
             nativeQuery = true)
-   List<BigDecimal[]> minMaxPriceBySubCategory(String url);
+   List<BigDecimal[]> minMaxPriceBySubCategory(String subcategory);
+
+   @Query(value = "SELECT min(price),max(price) FROM  product as p JOIN subcategory s on p.id_subcategory=s.id WHERE  s.url=?",
+           nativeQuery = true)
+   List<BigDecimal> getRangePriceBySubCategory(String subcategory);
 
     List <Product> findByNameContaining(String name, Pageable pageable);
 

@@ -1,5 +1,6 @@
 package ru.isha.store.controllers.client;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,7 @@ public class WelcomeController {
     public String welcome(Model model, HttpSession session){
 
         List<SpecCategory> specCategories= (List<SpecCategory>) servletContext.getAttribute(Constants.SPECCATEGORY_LIST);
-        List<Product> products = productService.listAllProductsForSpecCategory(specCategories.get(0).getId(),1, Constants.MAX_PRODUCTS_PER_HTML_PAGE);
+        List<Product> products = productService.listAllProductsBySpecCategory(specCategories.get(0).getId(), PageRequest.of(0, Constants.MAX_PRODUCTS_PER_HTML_PAGE));
         model.addAttribute("products", products);
         model.addAttribute("specCategory", specCategories.get(0));
         model.addAttribute("specCategoryList", specCategories);

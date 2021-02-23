@@ -8,7 +8,6 @@ import java.util.List;
 public interface SubCategoryRepo extends JpaRepository<Subcategory, Long> {
 
     List<Subcategory> findAll();
-
-    Subcategory findByName(String category);
-    Subcategory findByUrl(String category);
+    Subcategory findByName(String subcategory);
+    Subcategory findByUrl(String subcategory);
 }

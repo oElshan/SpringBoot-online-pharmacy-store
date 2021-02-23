@@ -1,6 +1,7 @@
 package ru.isha.store.controllers.client;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +57,7 @@ public class CategoryController extends AbstractProductController {
             model.addAttribute("filterProducersIdSet", filterProduct.getProducers());
             model.addAttribute("isFilterPrice", true);
         } else {
-            productsPage =productService.findAllProductByCategoryURL(subCategory, currentPage, Constants.MAX_PRODUCTS_PER_HTML_PAGE);
+            productsPage =productService.findAllProductBySubCategoryURL(subCategory, PageRequest.of(currentPage-1,Constants.MAX_PRODUCTS_PER_HTML_PAGE) );
             model.addAttribute("filterProduct", new FilterProduct());
             model.addAttribute("urlPagination", request.getRequestURI());
             model.addAttribute("minMax", productService.getMinMaxPriceProductByCategoryURL(subCategory));

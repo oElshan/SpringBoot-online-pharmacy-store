@@ -53,7 +53,7 @@ public class AdminController {
         Product product = productService.findProductById(id);
         model.addAttribute("editProduct", product);
         model.addAttribute("editProductForm", new EditProductForm());
-        model.addAttribute("specCategoryList", productService.listAllSpecCategory());
+        model.addAttribute("specCategoryList", productService.findAllSpecCategory());
         System.out.println("Product id" + id);
         return "edit-items";
     }
@@ -65,12 +65,12 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             System.out.println(editProductForm);
             model.addAttribute("editProduct", product);
-            model.addAttribute("specCategoryList", productService.listAllSpecCategory());
+            model.addAttribute("specCategoryList", productService.findAllSpecCategory());
             return "edit-items";
         }
         Product editProduct = productService.editProduct(editProductForm);
         model.addAttribute("editProduct", editProduct);
-        model.addAttribute("specCategoryList", productService.listAllSpecCategory());
+        model.addAttribute("specCategoryList", productService.findAllSpecCategory());
 
 
         System.out.println(product);
@@ -81,7 +81,7 @@ public class AdminController {
     @GetMapping(value = "/admin/create/product")
     public String newProduct(Model model) {
         model.addAttribute("newProductForm", new NewProductForm());
-        model.addAttribute("specCategoryList", productService.listAllSpecCategory());
+        model.addAttribute("specCategoryList", productService.findAllSpecCategory());
         return "create-product";
     }
 

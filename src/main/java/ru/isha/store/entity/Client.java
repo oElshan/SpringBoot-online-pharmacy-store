@@ -1,12 +1,14 @@
 package ru.isha.store.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "client")
-public class Client {
+public class Client implements Serializable {
+    private static final long serialVersionUID = 5140188785955589492L;
     private String firstName;
     private String lastName;
     private String streetAddress;

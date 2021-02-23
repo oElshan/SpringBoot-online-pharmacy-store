@@ -12,6 +12,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "client_order")
 public class ClientOrder implements Serializable {
+    private static final long serialVersionUID = -887399214605698469L;
     @JsonView(Views.Public.class)
     private Long id;
     @JsonView(Views.Public.class)

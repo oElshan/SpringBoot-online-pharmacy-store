@@ -1,11 +1,14 @@
 package ru.isha.store.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "account")
-public class Account {
+public class Account implements Serializable {
+
+    private static final long serialVersionUID = 2474483803272594113L;
     private String name;
     private String email;
     private Long id;

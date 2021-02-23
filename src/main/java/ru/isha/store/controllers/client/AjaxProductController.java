@@ -1,5 +1,6 @@
 package ru.isha.store.controllers.client;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -41,7 +42,8 @@ public class AjaxProductController {
     public String getProductsListForSpecCategory(@RequestParam("idCatalog") int idCatalog, Model model) {
         List<SpecCategory> specCategories = (List<SpecCategory>) servletContext.getAttribute(Constants.SPECCATEGORY_LIST);
         model.addAttribute("specCategory", specCategories.get(idCatalog-1));
-        model.addAttribute("products", productService.listAllProductsForSpecCategory(idCatalog, 1, Constants.MAX_PRODUCTS_PER_HTML_PAGE));
+        model.addAttribute("products", productService.listAllProductsBySpecCategory(idCatalog,
+                PageRequest.of(0, Constants.MAX_PRODUCTS_PER_HTML_PAGE)));
         return "fragment/products-list-home :: products";
     }
 

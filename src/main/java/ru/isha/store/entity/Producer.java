@@ -1,15 +1,20 @@
 package ru.isha.store.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "producer")
-public class Producer {
+public class Producer implements Serializable {
+    private static final long serialVersionUID = 689037798477322193L;
     private Long id;
     private String name;
     private List<Product> products;
+
+    public Producer() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +45,41 @@ public class Producer {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Producer(ProducerBuilder producerBuilder) {
+        this.id = producerBuilder.id;
+        this.name = producerBuilder.name;
+        this.products = producerBuilder.products;
+    }
+
+    public static class ProducerBuilder {
+        private Long id;
+        private String name;
+        private List<Product> products;
+
+        public ProducerBuilder() {
+        }
+
+        public ProducerBuilder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public ProducerBuilder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public ProducerBuilder setProducts(List<Product> products) {
+            this.products = products;
+            return this;
+        }
+
+        public  Producer build() {
+            return new Producer(this);
+        }
+    }
+
 
     @Override
     public boolean equals(Object o) {
