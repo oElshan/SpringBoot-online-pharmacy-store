@@ -8,7 +8,6 @@ import ru.isha.store.dto.FilterProduct;
 import ru.isha.store.dto.NewProductForm;
 import ru.isha.store.entity.*;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +29,7 @@ public interface ProductService {
 
     List<SpecCategory> findAllSpecCategory();
 
-    Product editProduct(EditProductForm editProductForm) throws IOException;
+    Product editProduct(EditProductForm editProductForm);
 
     Product createProduct(NewProductForm productForm);
 
@@ -44,7 +43,7 @@ public interface ProductService {
 
     Map<String,BigDecimal> getMinMaxPriceProductBySearchName(String search) ;
 
-    List<Producer> getProducersBySearchProduct(String search);
+    List<Producer> getProducersBySearchProductName(String search);
 
     Product createOrEditProduct(Product product, final NewProductForm productForm);
 
@@ -52,7 +51,5 @@ public interface ProductService {
 
     Subcategory findSubcategoryByURL(String categoryURl);
 
-    Page<Product> findProductByCategoryIDWherePriceAndProducer(long categoryId, BigDecimal min, BigDecimal max, Set<Long> producerId, int page, int limit);
-
-    Page<Product> getProductByFilter(FilterProduct filterProduct, int page, int maxProductsPerHtmlPage);
+    Page<Product> getProductByFilter(FilterProduct filterProduct, Pageable pageable);
 }

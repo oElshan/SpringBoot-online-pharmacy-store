@@ -89,7 +89,7 @@ public class AdminController {
     @PostMapping(value = "/admin/create/product")
     public String createProduct(@Valid @ModelAttribute("newProductForm") NewProductForm newProductForm, BindingResult bindingResult, Model model) {
 
-        if (bindingResult != null) {
+        if (bindingResult.hasErrors()) {
             logger.info("Ошибка валидации формы товара");
             return "create-product";
         }

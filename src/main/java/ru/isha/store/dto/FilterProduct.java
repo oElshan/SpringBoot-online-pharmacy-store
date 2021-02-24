@@ -1,7 +1,6 @@
 package ru.isha.store.dto;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Set;
 
 public class FilterProduct {
@@ -36,11 +35,5 @@ public class FilterProduct {
         this.price = price;
     }
 
-    @Override
-    public String toString() {
-        return "FilterProduct{" +
-                "idCategory=" + idCategory +
-                ", price=" + Arrays.toString(price) +
-                '}';
-    }
+
 }

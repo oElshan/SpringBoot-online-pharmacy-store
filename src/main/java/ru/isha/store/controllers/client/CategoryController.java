@@ -49,7 +49,7 @@ public class CategoryController extends AbstractProductController {
 
         if (model.containsAttribute("filterProduct")) {
             FilterProduct filterProduct = (FilterProduct) model.getAttribute("filterProduct");
-            productsPage = productService.getProductByFilter(filterProduct,currentPage, Constants.MAX_PRODUCTS_PER_HTML_PAGE);
+            productsPage = productService.getProductByFilter(filterProduct, PageRequest.of(currentPage - 1, Constants.MAX_PRODUCTS_PER_HTML_PAGE));
             model.addAttribute("filterProduct",  filterProduct);
             model.addAttribute("urlPagination", request.getRequestURI());
             model.addAttribute("minMax", productService.getMinMaxPriceProductByCategoryURL(subCategory));

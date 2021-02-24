@@ -83,7 +83,7 @@ public class ProductController extends AbstractProductController {
 
         }
 
-        model.addAttribute("producers", productService.getProducersBySearchProduct(search));
+        model.addAttribute("producers", productService.getProducersBySearchProductName(search));
 
         return "product-grid";
     }

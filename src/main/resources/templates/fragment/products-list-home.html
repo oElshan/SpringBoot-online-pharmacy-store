@@ -9,7 +9,7 @@
                 <div class="col-xs-6 col-sm-3 col-md-2  no-margin product-item-holder hover">
                     <div class="product-item" >
                         <div class="image">
-                            <img alt="" src="/static/images/blank.gif" data-echo="/static/images/products/fuflomicin256*186.jpg" />
+                            <img alt="" src="/static/images/blank.gif"    data-echo="" th:attr="data-echo=@{'/static/images/products/'+${product.imgLink}}" />
                         </div>
                         <div class="body">
                             <div class="title">

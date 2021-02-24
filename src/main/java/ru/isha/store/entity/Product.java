@@ -30,6 +30,7 @@ public class Product implements Serializable {
     public Product() {
     }
 
+
     @Basic
     @Temporal(TemporalType.DATE)
     @Column(name = "date")

@@ -8,13 +8,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import ru.isha.store.dto.FilterProduct;
 import ru.isha.store.entity.*;
 import ru.isha.store.repository.*;
 import ru.isha.store.services.ProductService;
 import ru.isha.store.utils.Constants;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -194,6 +197,11 @@ class ProductServiceImplTest {
 
     @Test
     void editProduct() {
+        Integer a =23;
+//        EditProductForm editProductForm = new EditProductForm();
+//        when(productRepo.findProductById(editProductForm.getId())).thenReturn(product);
+//        Product actual = productService.editProduct(editProductForm);
+//        assertThat(actual, equalTo(product));
     }
 
     @Test
@@ -207,7 +215,7 @@ class ProductServiceImplTest {
     @Test
     void getMinMaxPriceProductByCategoryURL() {
 
-        when(productRepo.minMaxPriceBySubCategory(subcategory.getUrl())).thenReturn(
+        when(productRepo.getRangePriceByProduct_SubCategory(subcategory.getUrl())).thenReturn(
                 Collections.singletonList(new BigDecimal[]{BigDecimal.valueOf(1), BigDecimal.valueOf(200)}));
 
         Map<String, BigDecimal> actual = productService.getMinMaxPriceProductByCategoryURL(subcategory.getUrl());
@@ -218,28 +226,51 @@ class ProductServiceImplTest {
 
     @Test
     void getMinMaxPriceProductBySearchName() {
+        when(productRepo.getRangePriceByProduct_NameLike(product.getName())).
+                thenReturn(Collections.singletonList(new BigDecimal[]{BigDecimal.valueOf(1), BigDecimal.valueOf(200)}));
 
+        Map<String, BigDecimal> actual = productService.getMinMaxPriceProductBySearchName(product.getName());
+
+        assertThat(actual.get("min"),equalTo(BigDecimal.valueOf(1)));
+        assertThat(actual,hasValue(BigDecimal.valueOf(200)));
 
     }
 
     @Test
     void getProducersBySearchProduct() {
+        when(productRepo.findDistinctByNameContaining(product.getName())).thenReturn(Collections.singletonList(product));
+        List<Producer> actual = productService.getProducersBySearchProductName(product.getName());
+        assertThat(actual, contains(product.getProducer()));
     }
 
     @Test
     void getProductByFilter() {
+        Page<Product> productPage = new PageImpl<>(Collections.singletonList(product));
+        FilterProduct filterProduct = new FilterProduct();
+        filterProduct.setIdCategory(product.getSubcategory().getId());
+        filterProduct.setPrice(new BigDecimal[]{BigDecimal.valueOf(1), BigDecimal.valueOf(200)});
+
+        when(productRepo.findBySubcategory_IdAndPriceBetween(filterProduct.getIdCategory(), filterProduct.getPrice()[0],
+                filterProduct.getPrice()[1], pageRequest)).thenReturn(productPage);
+        Page<Product> actual1 = productService.getProductByFilter(filterProduct, pageRequest);
+        assertThat(actual1, contains(product));
+
+        filterProduct.setProducers(Collections.singleton(product.getProducer().getId()));
+        when(productRepo.findBySubcategory_IdAndPriceBetweenAndProducer_IdIn(
+                filterProduct.getIdCategory(), filterProduct.getPrice()[0], filterProduct.getPrice()[1],
+                filterProduct.getProducers(), pageRequest)).thenReturn(productPage);
+        Page<Product> actual2 = productService.getProductByFilter(filterProduct, pageRequest);
+        assertThat(actual2, contains(product));
     }
 
     @Test
     void getProducersByCategoryURL() {
-    }
-
-    @Test
-    void findProductByCategoryIDWherePriceAndProducer() {
-
-
+        when(productRepo.findAllBySubcategory_Url(category.getUrl())).thenReturn(Collections.singletonList(product));
+        List<Producer> actual = productService.getProducersByCategoryURL(category.getUrl());
+        assertThat(actual, contains(product.getProducer()));
 
     }
+
 
     @Test
     void findSubcategoryByURL() {

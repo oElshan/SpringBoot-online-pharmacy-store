@@ -1,12 +1,13 @@
 package ru.isha.store.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import ru.isha.store.dto.EditProductForm;
 import ru.isha.store.dto.FilterProduct;
@@ -19,13 +20,15 @@ import ru.isha.store.services.ProductService;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.stream.Collectors;
-// TODO: 2020-12-26 добавить абстрактный класс для сервиса
-// TODO: 2020-12-26 реализовать метод потчета максимальной и мнимианльной цены для товаров по поиску имени
-
 
 @Service
+@PropertySource("classpath:application.properties")
 public class ProductServiceImpl implements ProductService {
 
     private ProductRepo productRepo;
@@ -128,15 +131,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
     @Override
-
     public Product createProduct(NewProductForm productForm) {
         Product product = new Product();
         createOrEditProduct(product, productForm);
         return product;
     }
 
-    public Product createOrEditProduct( Product product, final NewProductForm productForm) {
 
+    public Product createOrEditProduct( Product product, final NewProductForm productForm) {
         product.setName(productForm.getProductName());
         product.setDescription(productForm.getDescription());
         product.setPrice(new BigDecimal(productForm.getPrice()));
@@ -150,67 +152,63 @@ public class ProductServiceImpl implements ProductService {
         uploadImgProduct(file, product);
 
         Producer producer = producerRepo.findByName(productForm.getProducer());
-        if (producer == null) {
+        if (producer == null && productForm.getProducer()!=null) {
             producer = new Producer();
             producer.setName(productForm.getProducer());
-
+            producer.setProducts(new ArrayList<Product>(Arrays.asList(product)));
+            product.setProducer(producer);
         }
-        producer.setProducts(new ArrayList<Product>(Arrays.asList(product)));
-        product.setProducer(producer);
         productRepo.save(product);
         return product;
 
     }
+    private void uploadImgProduct(MultipartFile file, Product product) {
+        if (file != null && !file.getOriginalFilename().isEmpty()) {
+            File uploadDir = new File(env.getProperty("upload.path"));
+            String uuidFile = UUID.randomUUID().toString();
+            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+            try {
+                Path copyLocation = Paths
+                        .get(uploadDir.getAbsolutePath() + File.separator + StringUtils.cleanPath(resultFilename));
+                Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
+                product.setImgLink(resultFilename);
 
+            } catch (IOException e) {
+                System.out.println("error save file to disk");
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Override
     public Map<String,BigDecimal> getMinMaxPriceProductByCategoryURL(String subcategory) {
-        Map<String, BigDecimal> rangePrice = new HashMap<>();
-        List<BigDecimal[]> minMax = productRepo.minMaxPriceBySubCategory(subcategory);
-        for (BigDecimal[] m : minMax) {
-            rangePrice.put("min", m[0]);
-            rangePrice.put("max", m[1]);
+        Map<String, BigDecimal> rangePriceMinMax = new HashMap<>();
+        List<BigDecimal[]> rangePrice = productRepo.getRangePriceByProduct_SubCategory(subcategory);
+        for (BigDecimal[] m : rangePrice) {
+            rangePriceMinMax.put("min", m[0]);
+            rangePriceMinMax.put("max", m[1]);
         }
-        List<BigDecimal> rangePriceBySubCategory = productRepo.getRangePriceBySubCategory(subcategory);
-        return rangePrice;
+        return rangePriceMinMax;
     }
 
 
 
     @Override
     public Map<String,BigDecimal> getMinMaxPriceProductBySearchName(String search) {
-        Map<String, BigDecimal> minMaxPrice = new HashMap<>();
-        List<BigDecimal[]> minMax = productRepo.searchMinMaxPriceProductByNameLike(search);
-        for (BigDecimal[] m : minMax) {
-            minMaxPrice.put("min", m[0]);
-            minMaxPrice.put("max", m[1]);
+        Map<String, BigDecimal> rangePriceMinMax = new HashMap<>();
+        List<BigDecimal[]> rangePrice = productRepo.getRangePriceByProduct_NameLike(search);
+        for (BigDecimal[] m : rangePrice) {
+            rangePriceMinMax.put("min", m[0]);
+            rangePriceMinMax.put("max", m[1]);
         }
-        return minMaxPrice;
+        return rangePriceMinMax;
     }
 
-    private void uploadImgProduct(MultipartFile file, Product product) {
-        if (file != null && !file.getOriginalFilename().isEmpty()) {
-            File uploadDir = new File(env.getProperty("upload.path"));
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
-            }
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFilename = uuidFile + "." + file.getOriginalFilename();
-            System.out.println("resultFilename-------"+resultFilename);
 
-            try {
-                file.transferTo(new File(env.getProperty("upload.path") + "/" + resultFilename));
-            } catch (IOException e) {
-                System.out.println("error save file to disk");
-                e.printStackTrace();
-            }
-            product.setImgLink(resultFilename);
-        }
-    }
 
 
     @Override
-    public List<Producer> getProducersBySearchProduct(String search) {
+    public List<Producer> getProducersBySearchProductName(String search) {
         List<Product> products =  productRepo.findDistinctByNameContaining(search);
         List<Producer> producers = products.stream().map(Product::getProducer).filter(Objects::nonNull).distinct().collect(Collectors.toList());
         return producers;
@@ -218,17 +216,18 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public Page<Product> getProductByFilter(FilterProduct filterProduct, int page, int limit) {
+    public Page<Product> getProductByFilter(FilterProduct filterProduct, Pageable pageable) {
         Page<Product> productPage;
 
         if (filterProduct.getProducers() == null) {
-            productPage = productRepo.findBySubcategory_IdAndPriceBetween(filterProduct.getIdCategory(), filterProduct.getPrice()[0], filterProduct.getPrice()[1], PageRequest.of(page - 1, limit));
+            productPage = productRepo.findBySubcategory_IdAndPriceBetween(filterProduct.getIdCategory(),
+                    filterProduct.getPrice()[0], filterProduct.getPrice()[1], pageable);
 
         } else {
 
             productPage = productRepo.findBySubcategory_IdAndPriceBetweenAndProducer_IdIn(
                     filterProduct.getIdCategory(), filterProduct.getPrice()[0], filterProduct.getPrice()[1],
-                    filterProduct.getProducers(), PageRequest.of(page - 1, limit));
+                    filterProduct.getProducers(), pageable);
         }
 
         return productPage;
@@ -249,13 +248,6 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
-
-    @Override
-    public Page<Product> findProductByCategoryIDWherePriceAndProducer(long categoryId, BigDecimal min, BigDecimal max, Set<Long> producerId, int page, int limit) {
-        Page<Product> productPage = productRepo.findBySubcategory_IdAndPriceBetweenAndProducer_IdIn(categoryId, min, max, producerId, PageRequest.of(page-1,limit));
-
-        return productPage;
-    }
 
     @Override
     public Subcategory findSubcategoryByURL(String categoryURl) {
