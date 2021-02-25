@@ -1,4 +1,4 @@
-package ru.isha.store.model;
+package ru.isha.store.dto;
 
 public class FilterPrice {
 }

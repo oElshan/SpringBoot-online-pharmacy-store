@@ -1,5 +1,7 @@
 package ru.isha.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -14,6 +16,7 @@ public class Status implements Serializable {
     private List<ClientOrder> clientOrders;
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "status", fetch = FetchType.LAZY, cascade =  {CascadeType.PERSIST, CascadeType.MERGE})
     public List<ClientOrder> getClientOrders() {
         return clientOrders;

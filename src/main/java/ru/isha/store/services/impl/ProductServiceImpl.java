@@ -17,6 +17,7 @@ import ru.isha.store.exception.ResourceNotFoundException;
 import ru.isha.store.repository.*;
 import ru.isha.store.services.ProductService;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -138,7 +139,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    public Product createOrEditProduct( Product product, final NewProductForm productForm) {
+    public Product createOrEditProduct(@Nonnull Product product, final NewProductForm productForm) {
         product.setName(productForm.getProductName());
         product.setDescription(productForm.getDescription());
         product.setPrice(new BigDecimal(productForm.getPrice()));

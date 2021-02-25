@@ -1,21 +1,24 @@
 package ru.isha.store.rest;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.isha.store.dto.OrderForm;
 import ru.isha.store.entity.ClientOrder;
 import ru.isha.store.model.ShoppingCart;
 import ru.isha.store.model.ShoppingCartItem;
+import ru.isha.store.utils.Constants;
+import ru.isha.store.utils.Views;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
 @RequestMapping(value = "/rest/cart")
-@Secured({"ROLE_USER"})
+//@Secured({"ROLE_USER"})
 public class CartRestController {
 
 
@@ -23,11 +26,12 @@ public class CartRestController {
 	 * Viewing the cart.
 	 */
 	@RequestMapping(
-		method = RequestMethod.GET,
-		produces = "application/json;charset=UTF-8")
+			method = RequestMethod.GET,
+			produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public ShoppingCart getCart(Principal principal) {
-		return null;
+	@JsonView(Views.Internal.class)
+	public ShoppingCart getCart(Principal principal, HttpSession session) {
+		return (ShoppingCart) session.getAttribute(Constants.CURRENT_SHOPPING_CART);
 	}
 
 	/**

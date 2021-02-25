@@ -1,14 +1,19 @@
 package ru.isha.store.services.impl;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import ru.isha.store.dto.EditProductForm;
 import ru.isha.store.dto.FilterProduct;
+import ru.isha.store.dto.NewProductForm;
 import ru.isha.store.entity.*;
 import ru.isha.store.repository.*;
 import ru.isha.store.services.ProductService;
@@ -37,7 +42,8 @@ class ProductServiceImplTest {
     private CategoryRepo categoryRepo;
     @Mock
     private SpecCategoryRepo specCategoryRepo;
-
+    @Captor
+    private ArgumentCaptor<Product> productCaptor;
 
     private ProductService productService;
     private Product product;
@@ -197,19 +203,55 @@ class ProductServiceImplTest {
 
     @Test
     void editProduct() {
-        Integer a =23;
-//        EditProductForm editProductForm = new EditProductForm();
-//        when(productRepo.findProductById(editProductForm.getId())).thenReturn(product);
-//        Product actual = productService.editProduct(editProductForm);
-//        assertThat(actual, equalTo(product));
+        EditProductForm editProductForm = new EditProductForm();
+        editProductForm.setId(product.getId());
+        editProductForm.setVisible(product.getVisible());
+        editProductForm.setProductName(product.getName());
+        editProductForm.setCategory(product.getSubcategory().getName());
+        editProductForm.setDescription(product.getDescription());
+        editProductForm.setPrice(product.getPrice().toString());
+        editProductForm.setSpecCategory(product.getSpecCategory().getName());
+        editProductForm.setProducer(product.getProducer().getName());
+
+        when(productRepo.findProductById(editProductForm.getId())).thenReturn(product);
+        when(subCategoryRepo.findByName(subcategory.getName())).thenReturn(subcategory);
+        when(specCategoryRepo.findByName(specCategory.getName())).thenReturn(specCategory);
+        when(producerRepo.findByName(producer.getName())).thenReturn(producer);
+
+        Product actual = productService.editProduct(editProductForm);
+        assertThat(actual, equalTo(product));
     }
 
     @Test
     void createProduct() {
+        NewProductForm newProductForm = new NewProductForm();
+        newProductForm.setVisible(product.getVisible());
+        newProductForm.setProductName(product.getName());
+        newProductForm.setCategory(product.getSubcategory().getName());
+        newProductForm.setDescription(product.getDescription());
+        newProductForm.setPrice(product.getPrice().toString());
+        newProductForm.setSpecCategory(product.getSpecCategory().getName());
+        newProductForm.setProducer(product.getProducer().getName());
+
+        when(subCategoryRepo.findByName(subcategory.getName())).thenReturn(subcategory);
+        when(specCategoryRepo.findByName(specCategory.getName())).thenReturn(specCategory);
+        when(producerRepo.findByName(producer.getName())).thenReturn(producer);
+
+        Product actual = productService.createProduct(newProductForm);
+        assertThat(actual.getName(), equalTo(product.getName()));
     }
 
     @Test
-    void createOrEditProduct() {
+    void createOrEdit_NullProduct() {
+        NewProductForm newProductForm = new NewProductForm();
+        newProductForm.setVisible(product.getVisible());
+        newProductForm.setProductName(product.getName());
+        newProductForm.setCategory(product.getSubcategory().getName());
+        newProductForm.setDescription(product.getDescription());
+        newProductForm.setPrice(product.getPrice().toString());
+        newProductForm.setSpecCategory(product.getSpecCategory().getName());
+        newProductForm.setProducer(product.getProducer().getName());
+        Assertions.assertThrows(NullPointerException.class, () -> productService.createOrEditProduct(null, newProductForm));
     }
 
     @Test

@@ -1,5 +1,7 @@
 package ru.isha.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -27,6 +29,7 @@ public class Role implements Serializable {
     }
 
     @OneToMany(mappedBy = "role",fetch = FetchType.LAZY,cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonIgnore
     public List<Account> getAccounts() {
         return accounts;
     }

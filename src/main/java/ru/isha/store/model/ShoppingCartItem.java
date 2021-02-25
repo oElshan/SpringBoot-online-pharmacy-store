@@ -1,12 +1,15 @@
 package ru.isha.store.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import ru.isha.store.entity.Product;
+import ru.isha.store.utils.Views;
 
 import java.io.Serializable;
 
 public class ShoppingCartItem implements Serializable {
 
     private static final long serialVersionUID = 1689073980159902317L;
+    @JsonView(Views.Public.class)
     private Product product;
     private int count;
 

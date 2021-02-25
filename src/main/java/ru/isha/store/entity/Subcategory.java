@@ -1,5 +1,7 @@
 package ru.isha.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -30,7 +32,7 @@ public class Subcategory implements Serializable {
         this.id = id;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_category",foreignKey = @ForeignKey(name = "subcategory_category__fk"))
     public Category getCategory() {
         return category;
@@ -40,6 +42,7 @@ public class Subcategory implements Serializable {
         this.category = category;
     }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "subcategory", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     public List<Product> getProducts() {
         return products;

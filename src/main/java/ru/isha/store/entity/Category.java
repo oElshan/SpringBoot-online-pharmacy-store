@@ -1,5 +1,7 @@
 package ru.isha.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -26,6 +28,7 @@ public class Category implements Serializable {
     }
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonIgnore
     public List<Subcategory> getSubcategoryList() {
         return subcategoryList;
     }

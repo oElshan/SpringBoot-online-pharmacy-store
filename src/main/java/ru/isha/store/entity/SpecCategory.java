@@ -1,5 +1,7 @@
 package ru.isha.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -18,6 +20,7 @@ public class SpecCategory implements Serializable {
     }
 
     @OneToMany(mappedBy = "specCategory",fetch = FetchType.LAZY,cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonIgnore
     public List<Product> getProductList() {
         return productList;
     }

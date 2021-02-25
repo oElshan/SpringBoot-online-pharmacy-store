@@ -18,9 +18,9 @@
                 <ul class="right">
                     <!--<span sec:authentication="name">Bob</span>-->
                     <li sec:authorize="isAnonymous()"><a href="/login">Login</a></li>
-                    <ul sec:authorize="hasAuthority('ADMIN')">
-                        <li><a href="/admin" >Admin page</a>
-                        <li><a href="/logout" class="text-danger">Logout</a>
+                    <ul >
+                        <li sec:authorize="hasAuthority('ADMIN')"><a href="/admin" >Admin page</a>
+                        <li sec:authorize="hasAnyAuthority('ADMIN,USER')"><a href="/logout" class="text-danger">Logout</a>
                     </ul>
                     </li>
                 </ul>

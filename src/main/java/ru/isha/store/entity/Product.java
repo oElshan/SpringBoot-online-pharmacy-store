@@ -84,7 +84,7 @@ public class Product implements Serializable {
         this.producer = producer;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_subcategory",foreignKey = @ForeignKey(name = "product_subcategory__fk"))
     public Subcategory getSubcategory() {
         return subcategory;
