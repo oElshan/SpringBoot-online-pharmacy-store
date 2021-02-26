@@ -42,7 +42,7 @@ public class ContextOnAppListener implements ApplicationListener<ApplicationRead
         if (account == null) {
             String passwordEncode = passwordEncoder.encode("admin");
             Role role = new Role();
-            role.setName("ADMIN");
+            role.setName("ROLE_ADMIN");
              accountService.createAccount(new Account.AccountBuilder().setName("admin").setRole(role).setEmail("admin@admin.com").setPassword(passwordEncode).build());
             log.info("CREATE ADMIN ACCOUNT");
         }

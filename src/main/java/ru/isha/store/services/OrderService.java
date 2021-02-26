@@ -12,6 +12,8 @@ public interface OrderService {
 
     long getCountNewOrders(String status);
 
+    List<ClientOrder> getAll();
+
     List<ClientOrder> getTodayOrder();
 
     Page<ClientOrder> getOrdersLimit(int page, int limit, String status);
@@ -24,7 +26,7 @@ public interface OrderService {
 
     List<Status> getAllStatusOrders();
 
-    ClientOrder findClientOrderById(long id);
+    ClientOrder getClientOrderById(long id);
 
     ClientOrder updateClientOrderItem(long orderId, long productId, int count);
 

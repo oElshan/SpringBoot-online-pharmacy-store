@@ -90,7 +90,7 @@ public class AjaxAdminController {
             model.addAttribute("editOrder", new EditOrder());
         }
 
-        ClientOrder clientOrder = orderService.findClientOrderById(id);
+        ClientOrder clientOrder = orderService.getClientOrderById(id);
         List<OrderItem> orderItems = clientOrder.getOrderItems();
         List<Status> statuses = orderService.getAllStatusOrders();
 

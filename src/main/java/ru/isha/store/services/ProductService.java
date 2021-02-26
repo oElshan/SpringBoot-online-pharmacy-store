@@ -9,6 +9,7 @@ import ru.isha.store.dto.NewProductForm;
 import ru.isha.store.entity.*;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,4 +53,6 @@ public interface ProductService {
     Subcategory findSubcategoryByURL(String categoryURl);
 
     Page<Product> getProductByFilter(FilterProduct filterProduct, Pageable pageable);
+
+    Collection<Product> findAll();
 }

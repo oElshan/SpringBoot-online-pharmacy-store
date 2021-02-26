@@ -57,6 +57,10 @@ public class OrderServiceImpl implements OrderService {
         return clientOrders;
     }
 
+    @Override
+    public List<ClientOrder> getAll() {
+        return orderRepo.findAll();
+    }
 
     @Transactional
     @Override
@@ -104,7 +108,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ClientOrder findClientOrderById(long id) {
+    public ClientOrder getClientOrderById(long id) {
         return orderRepo.findById(id);
     }
 

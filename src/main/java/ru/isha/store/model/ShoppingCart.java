@@ -14,14 +14,16 @@ import java.util.Map;
 public class ShoppingCart implements Serializable {
 
     private static final long serialVersionUID = 7515264838799370547L;
-    @JsonView(Views.Internal.class)
-    private Map<Long, ShoppingCartItem> products = new LinkedHashMap<>();
+
     @JsonView(Views.Public.class)
     private BigDecimal totalCost = BigDecimal.ZERO;
     @JsonView(Views.Public.class)
     private BigDecimal deliveryCost = BigDecimal.ZERO;
     @JsonView(Views.Public.class)
     private int totalCount = 0;
+    @JsonView(Views.Internal.class)
+    private Map<Long, ShoppingCartItem> products = new LinkedHashMap<>();
+
 
 
     /**
@@ -65,9 +67,9 @@ public class ShoppingCart implements Serializable {
             for (ShoppingCartItem shoppingCartItem : products.values()) {
                 totalCount += shoppingCartItem.getCount();
                 totalCost = totalCost.add(shoppingCartItem.getProduct().getPrice().multiply(BigDecimal.valueOf(shoppingCartItem.getCount())));
-                if (totalCost.compareTo(BigDecimal.valueOf(Constants.FREE_DELIVERY_COST))>0) {
-                    deliveryCost = BigDecimal.valueOf(Constants.DELIVERY_COST);
-                }
+            }
+            if (totalCost.compareTo(BigDecimal.valueOf(Constants.FREE_DELIVERY_COST))<=0) {
+                deliveryCost = BigDecimal.valueOf(Constants.DELIVERY_COST);
             }
         }
 

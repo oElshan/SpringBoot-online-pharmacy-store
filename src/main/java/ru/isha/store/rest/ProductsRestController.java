@@ -6,12 +6,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ru.isha.store.entity.Product;
+import ru.isha.store.services.ProductService;
 
 import java.util.Collection;
 
 @Controller
 @RequestMapping(value = "/rest/products")
 public class ProductsRestController {
+
+	private ProductService productService;
+
+
+	public ProductsRestController(ProductService productService) {
+		this.productService = productService;
+	}
 
 	/**
 	 * All the products.
@@ -21,7 +29,7 @@ public class ProductsRestController {
 		produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public Collection<Product> getProducts() {
-		return null;
+		return productService.findAll();
 	}
 
 	/**
@@ -34,6 +42,7 @@ public class ProductsRestController {
 		produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public Product getProduct(@PathVariable long id){
-		return null;
+		return productService.findProductById(id);
 	}
+
 }

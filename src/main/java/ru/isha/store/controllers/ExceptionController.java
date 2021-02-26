@@ -1,12 +1,11 @@
-package ru.isha.store.exception;
+package ru.isha.store.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import ru.isha.store.exception.ResourceNotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,11 +24,5 @@ public class ExceptionController  {
         log.error("Request: " + request.getRequestURL() + " raised " + e);
         return "404";
     }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public void handleNotAuthenticatedException(AccessDeniedException ex) {
-    }
-
 
 }

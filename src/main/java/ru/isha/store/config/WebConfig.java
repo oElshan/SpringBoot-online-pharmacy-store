@@ -11,7 +11,6 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import ru.isha.store.interceptors.RestUserCheckInterceptor;
 import ru.isha.store.interceptors.ShoppingCartInterceptor;
 
 
@@ -48,9 +47,6 @@ public class WebConfig  implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/admin/**")
                 .excludePathPatterns("/rest/**");
-        registry.addInterceptor(new RestUserCheckInterceptor())
-                .addPathPatterns("/rest/cart**")
-                .addPathPatterns("/rest/customer**");
     }
 
 

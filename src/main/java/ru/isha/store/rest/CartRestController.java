@@ -3,13 +3,13 @@ package ru.isha.store.rest;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ru.isha.store.dto.CartItemDTO;
 import ru.isha.store.dto.OrderForm;
 import ru.isha.store.entity.ClientOrder;
 import ru.isha.store.model.ShoppingCart;
-import ru.isha.store.model.ShoppingCartItem;
-import ru.isha.store.utils.Constants;
 import ru.isha.store.utils.Views;
 
 import javax.servlet.http.HttpSession;
@@ -17,8 +17,8 @@ import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
-@RequestMapping(value = "/rest/cart")
-//@Secured({"ROLE_USER"})
+@RequestMapping(value = "/rest/customer/cart")
+@Secured("ROLE_USER")
 public class CartRestController {
 
 
@@ -30,23 +30,27 @@ public class CartRestController {
 			produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	@JsonView(Views.Internal.class)
-	public ShoppingCart getCart(Principal principal, HttpSession session) {
-		return (ShoppingCart) session.getAttribute(Constants.CURRENT_SHOPPING_CART);
+	public ShoppingCart getCart( HttpSession session) {
+		return null;
+
 	}
 
 	/**
 	 * Adding a product.
 	 *
 	 * @return updated cart
-	 * @throws  if the specified product does not exist
+	 * @throws if the specified product does not exist
 	 */
 	@RequestMapping(
-		method = RequestMethod.PUT,
-		consumes = "application/json;charset=UTF-8",
-		produces = "application/json;charset=UTF-8")
+			method = RequestMethod.PUT,
+			consumes = "application/json;charset=UTF-8",
+			produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public ShoppingCart addItem(Principal principal, @RequestBody ShoppingCartItem item)  {
+	public ShoppingCart addItem(@RequestBody @Valid CartItemDTO cartItemDTO) {
+
+
 		return null;
+
 	}
 
 	/**
