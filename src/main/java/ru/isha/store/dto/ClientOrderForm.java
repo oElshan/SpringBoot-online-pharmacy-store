@@ -5,7 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class OrderForm {
+public class ClientOrderDTO {
 
     @NotEmpty(message = "Пустое поле! Введите имя клиента!")
     @Size(max = 50,message = "max size  = 50  ")
@@ -85,7 +85,7 @@ public class OrderForm {
 
     @Override
     public String toString() {
-        return "OrderForm{" +
+        return "ClientOrderDTO{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", streetAddress='" + streetAddress + '\'' +
