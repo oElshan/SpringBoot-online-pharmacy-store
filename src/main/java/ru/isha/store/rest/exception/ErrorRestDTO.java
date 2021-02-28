@@ -1,25 +1,22 @@
 package ru.isha.store.rest.exception;
 
+import org.springframework.http.HttpStatus;
+
 public class ErrorRestDTO {
     private final String message;
-    private final String description;
-    private final String entityName;
+    private final HttpStatus httpStatus;
 
-    public ErrorRestDTO(String message, String description, String entityName) {
+    public ErrorRestDTO(String message, HttpStatus httpStatus) {
         this.message = message;
-        this.description = description;
-        this.entityName = entityName;
+        this.httpStatus = httpStatus;
     }
+
 
     public String getMessage() {
         return message;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public String getEntityName() {
-        return entityName;
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
     }
 }

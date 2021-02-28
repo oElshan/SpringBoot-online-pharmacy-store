@@ -1,14 +1,23 @@
 package ru.isha.store.services;
 
 import org.springframework.data.domain.Page;
+import ru.isha.store.dto.CartItemDTO;
+import ru.isha.store.dto.ClientOrderForm;
 import ru.isha.store.dto.EditOrder;
 import ru.isha.store.entity.ClientOrder;
 import ru.isha.store.entity.Status;
+import ru.isha.store.model.ShoppingCart;
 
 import java.util.List;
 
 public interface OrderService {
     List<ClientOrder> getAllNewOrders();
+
+    ClientOrder newClientOrder(ShoppingCart shoppingCart, ClientOrderForm clientOrderForm);
+
+    ClientOrder newClientOrder(CartItemDTO cartItemDTO);
+
+    List<ClientOrder> getOrdersByStatus(String status);
 
     long getCountNewOrders(String status);
 

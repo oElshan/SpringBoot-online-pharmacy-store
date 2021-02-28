@@ -4,8 +4,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
-public class ClientOrderDTO {
+public class ClientOrderForm {
 
     @NotEmpty(message = "Пустое поле! Введите имя клиента!")
     @Size(max = 50,message = "max size  = 50  ")
@@ -13,10 +14,10 @@ public class ClientOrderDTO {
     @NotEmpty(message = "Пустое поле! Введите имя клиента!")
     @Size(max = 50,message = "max size  = 50  ")
     private String lastName;
-    @NotEmpty(message = "Пустое поле! Введите имя клиента!")
+    @NotEmpty(message = "Пустое поле! Введите адрес!")
     @Size(max = 200,message = "max size  = 200  ")
     private String streetAddress;
-    @NotEmpty(message = "Пустое поле! Введите имя клиента!")
+    @NotEmpty(message = "Пустое поле! Город!")
     @Size(max = 50,message = "max size  = 50  ")
     private String town;
     private String zipCode;
@@ -84,15 +85,21 @@ public class ClientOrderDTO {
     }
 
     @Override
-    public String toString() {
-        return "ClientOrderDTO{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", streetAddress='" + streetAddress + '\'' +
-                ", town='" + town + '\'' +
-                ", zipCode=" + zipCode +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ClientOrderForm that = (ClientOrderForm) o;
+        return Objects.equals(firstName, that.firstName) &&
+                Objects.equals(lastName, that.lastName) &&
+                Objects.equals(streetAddress, that.streetAddress) &&
+                Objects.equals(town, that.town) &&
+                Objects.equals(zipCode, that.zipCode) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(phone, that.phone);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, streetAddress, town, zipCode, email, phone);
     }
 }

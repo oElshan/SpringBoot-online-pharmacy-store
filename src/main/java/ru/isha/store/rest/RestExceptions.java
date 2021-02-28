@@ -1,14 +1,20 @@
-package ru.isha.store.rest.exception;
+package ru.isha.store.rest;
 
 
-import org.springframework.http.HttpRequest;
-import org.springframework.security.access.AccessDeniedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 
+//@Controller
+@ControllerAdvice(basePackages = "ru.isha.store.rest")
 public class RestExceptions {
 
+    private static final Logger log = LoggerFactory.getLogger(RestExceptions.class);
 
-    public ErrorRestDTO acsessDenite(AccessDeniedException e, HttpRequest request) {
-        return new ErrorRestDTO("Access is denied",request.getURI().toString(),"");
-    }
-
+//    @ExceptionHandler(NoHandlerFoundException.class)
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    public ErrorRestDTO otherExceptions(Exception e, WebRequest request) {
+//        ErrorRestDTO response = new ErrorRestDTO("Error url",h);
+//        return response;
+//    }
 }

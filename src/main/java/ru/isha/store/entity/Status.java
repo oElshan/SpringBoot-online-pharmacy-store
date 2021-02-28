@@ -1,6 +1,8 @@
 package ru.isha.store.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import ru.isha.store.utils.Views;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,6 +13,7 @@ import java.util.Objects;
 @Table(name = "status")
 public class Status implements Serializable {
     private static final long serialVersionUID = 7836165684601631105L;
+    @JsonView(Views.Public.class)
     private String name;
     private Integer id;
     private List<ClientOrder> clientOrders;

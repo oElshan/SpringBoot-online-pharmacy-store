@@ -2,42 +2,117 @@ package ru.isha.store.services.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.isha.store.dto.CartItemDTO;
+import ru.isha.store.dto.ClientOrderForm;
 import ru.isha.store.dto.EditOrder;
 import ru.isha.store.entity.Client;
 import ru.isha.store.entity.ClientOrder;
 import ru.isha.store.entity.OrderItem;
 import ru.isha.store.entity.Status;
-import ru.isha.store.repository.OrderItemRepo;
-import ru.isha.store.repository.OrderRepo;
-import ru.isha.store.repository.StatusRepo;
+import ru.isha.store.model.ShoppingCart;
+import ru.isha.store.model.ShoppingCartItem;
+import ru.isha.store.repository.*;
 import ru.isha.store.services.OrderService;
 
-import java.util.List;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
-    @Autowired
-    OrderRepo orderRepo;
+    private final OrderRepo orderRepo;
+    private final StatusRepo statusRepo;
+    private final OrderItemRepo orderItemRepo;
+    private final ClientRepo clientRepo;
+    private final ProductRepo productRepo;
 
-    @Autowired
-    StatusRepo statusRepo;
-    @Autowired
-    OrderItemRepo orderItemRepo;
+    public OrderServiceImpl(OrderRepo orderRepo, StatusRepo statusRepo,
+                            OrderItemRepo orderItemRepo, ClientRepo clientRepo,ProductRepo productRepo) {
+        this.orderRepo = orderRepo;
+        this.statusRepo = statusRepo;
+        this.orderItemRepo = orderItemRepo;
+        this.clientRepo = clientRepo;
+        this.productRepo = productRepo;
 
-
+    }
 
     @Override
     public List<ClientOrder>  getAllNewOrders() {
        return orderRepo.findAllByStatusName("new");
+    }
+
+    @Override
+    public ClientOrder newClientOrder(CartItemDTO cartItemDTO) {
+        ShoppingCart shoppingCart = new ShoppingCart();
+        cartItemDTO.getProducts().entrySet().stream().peek(
+                longIntegerEntry -> shoppingCart.
+                        addProduct(productRepo.findProductById(longIntegerEntry.getKey()),
+                                longIntegerEntry.getValue())).collect(Collectors.toList());
+
+        ClientOrderForm clientOrderForm = new ClientOrderForm();
+        clientOrderForm.setEmail(cartItemDTO.getEmail());
+        clientOrderForm.setFirstName(cartItemDTO.getFirstName());
+        clientOrderForm.setLastName(cartItemDTO.getLastName());
+        clientOrderForm.setPhone(cartItemDTO.getPhone());
+        clientOrderForm.setStreetAddress(cartItemDTO.getStreetAddress());
+        clientOrderForm.setTown(cartItemDTO.getTown());
+        clientOrderForm.setZipCode(cartItemDTO.getZipCode());
+
+        return newClientOrder(shoppingCart, clientOrderForm);
+    }
+
+    @Transactional
+    public ClientOrder newClientOrder(ShoppingCart shoppingCart, ClientOrderForm clientOrderForm) {
+
+        Collection<ShoppingCartItem> items = shoppingCart.getItems();
+        ClientOrder clientOrder = new ClientOrder();
+        List<OrderItem> orderItems = new ArrayList<>();
+        clientOrder.setOrderItems(orderItems);
+        clientOrder.setCreated(Timestamp.valueOf(LocalDateTime.now()));
+
+        for (ShoppingCartItem item : items) {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setProduct(item.getProduct());
+            orderItem.setCount(item.getCount());
+            orderItem.setClientOrder(clientOrder);
+            clientOrder.getOrderItems().add(orderItem);
+        }
+
+        List<ClientOrder> clientOrders = new ArrayList<>();
+        Client client = clientRepo.findByPhone(clientOrderForm.getPhone());
+
+        if (client == null) {
+            client = new Client();
+            client.setFirstName(clientOrderForm.getFirstName());
+            client.setLastName(clientOrderForm.getLastName());
+            client.setStreetAddress(clientOrderForm.getStreetAddress());
+            client.setTown(clientOrderForm.getTown());
+            client.setEmail(clientOrderForm.getEmail());
+            client.setPhone(clientOrderForm.getPhone());
+        }
+        clientOrder.setClient(client);
+        Status status = statusRepo.getById(1);
+        clientOrder.setStatus(status);
+        clientOrders.add(orderRepo.save(clientOrder));
+        client.setClientOrders(clientOrders);
+
+        clientRepo.save(client);
+        return clientOrder;
+    }
+
+
+    @Override
+    public List<ClientOrder> getOrdersByStatus(String status) {
+        return orderRepo.findAllByStatusName(status);
     }
 
     @Override
@@ -84,23 +159,18 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<ClientOrder> getOrdersLimit(int page, int limit) {
-
        return   orderRepo.findAll(PageRequest.of(page-1,limit, Sort.Direction.DESC,"created"));
     }
 
     @Override
     public Page<ClientOrder> getOrdersLimit(int page, int limit, String status) {
-
-//      return orderRepo.findAllByStatusSelect(status, PageRequest.of(page - 1, limit, Sort.Direction.DESC, "created"));
         return orderRepo.findAllByStatusName(status, PageRequest.of(page - 1, limit, Sort.Direction.DESC, "created"));
     }
 
     @Override
     public ClientOrder findOrderByPhone(String phone) {
-
         return orderRepo.findAllByClientPhone(phone);
     }
-
 
     @Override
     public List<Status>  getAllStatusOrders() {
@@ -111,7 +181,6 @@ public class OrderServiceImpl implements OrderService {
     public ClientOrder getClientOrderById(long id) {
         return orderRepo.findById(id);
     }
-
 
     @Transactional
     @Override
@@ -135,7 +204,6 @@ public class OrderServiceImpl implements OrderService {
         logger.info("...........................................deleting client order N"+id);
         orderRepo.deleteById(id);
     }
-
 
     @Override
     public void deleteOrder(ClientOrder clientOrder) {

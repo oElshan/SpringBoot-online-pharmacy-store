@@ -1,15 +1,15 @@
 package ru.isha.store.rest;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import ru.isha.store.dto.CartItemDTO;
 import ru.isha.store.entity.ClientOrder;
 import ru.isha.store.services.OrderService;
+import ru.isha.store.utils.Views;
 
-import java.security.Principal;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -30,28 +30,18 @@ public class AdminOrdersRestController {
 	/**
 	 * View orders.
 	 *
-	 * @return orders list of the specified customer
+	 * @return all orders or all orders with status
 	 */
+	@JsonView(Views.Public.class)
 	@RequestMapping(
 			method = RequestMethod.GET,
 			produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public List<ClientOrder> getOrders() {
-		return orderService.getAll();
-	}
-
-
-	/**
-	 * View orders.
-	 *
-	 * @return orders list of the specified customer
-	 */
-	@RequestMapping(value = "/{id}",
-			method = RequestMethod.GET,
-			produces = "application/json;charset=UTF-8")
-	@ResponseBody
-	public ClientOrder getOrder(@PathVariable("id") long id) {
-		return orderService.getClientOrderById(id);
+	public List<ClientOrder> getOrders(@RequestParam(value = "status",required = false) String status) {
+		if (status == null) {
+			return orderService.getAll();
+		}
+		return orderService.getOrdersByStatus(status);
 	}
 
 	/**
@@ -59,11 +49,44 @@ public class AdminOrdersRestController {
 	 *
 	 * @return order of the specified customer
 	 */
+	@JsonView(Views.Public.class)
 	@RequestMapping(value = "/{id}",
-		method = RequestMethod.GET,
-		produces = "application/json;charset=UTF-8")
+			method = RequestMethod.GET,
+			produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public ClientOrder getOrder(Principal principal, @PathVariable long id)  {
-		return null;
+	public ClientOrder getOrder( @PathVariable long id) {
+		return orderService.getClientOrderById(id);
 	}
+
+	/**
+	 * View all orders with status
+	 *
+	 * @return orders
+	 */
+	@JsonView(Views.Public.class)
+	@RequestMapping(value = "/status/{status}",
+			method = RequestMethod.GET,
+			produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public List<ClientOrder> getOrderByStatus(@PathVariable("status")String status) {
+		return orderService.getOrdersByStatus(status);
+	}
+
+	/**
+	 * Add new order
+	 *
+	 * @return created order
+	 */
+	@RequestMapping(
+			value = "/add",
+			method = RequestMethod.PUT,
+			consumes = "application/json;charset=UTF-8",
+			produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public ClientOrder addClientOrder(@RequestBody @Valid CartItemDTO cartItemDTO) {
+		return orderService.newClientOrder(cartItemDTO);
+	}
+
 }
+
+

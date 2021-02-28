@@ -22,7 +22,7 @@ public class ContextOnAppListener implements ApplicationListener<ApplicationRead
     private static final Logger log = LoggerFactory.getLogger(ContextOnAppListener.class);
 
     @Autowired
-    private ProductService productService;
+    private  ProductService productService;
 //
     @Autowired
     private ServletContext servletContext;

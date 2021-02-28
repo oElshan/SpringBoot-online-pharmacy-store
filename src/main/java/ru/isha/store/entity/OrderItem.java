@@ -1,5 +1,8 @@
 package ru.isha.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import ru.isha.store.utils.Views;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -9,9 +12,12 @@ import java.util.Objects;
 public class OrderItem implements Serializable {
 
     private static final long serialVersionUID = -96906528035960314L;
+    @JsonView(Views.Public.class)
     private Long id;
+    @JsonView(Views.Public.class)
     private int count;
     private ClientOrder clientOrder;
+    @JsonView(Views.Public.class)
     private Product product;
 
     @Id

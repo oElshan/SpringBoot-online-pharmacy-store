@@ -7,10 +7,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ru.isha.store.dto.OrderForm;
+import ru.isha.store.dto.ClientOrderForm;
 import ru.isha.store.entity.ClientOrder;
 import ru.isha.store.model.ShoppingCart;
-import ru.isha.store.services.ClientService;
+import ru.isha.store.services.OrderService;
 import ru.isha.store.utils.Constants;
 
 import javax.servlet.http.HttpSession;
@@ -21,22 +21,22 @@ import java.math.BigDecimal;
 @RequestMapping(value = "/ajax/orders")
 public class AjaxOrderController {
 
-    private ClientService clientService;
+    private final OrderService orderService;
 
 
-    public AjaxOrderController(ClientService clientService) {
-        this.clientService = clientService;
+    public AjaxOrderController(OrderService orderService) {
+        this.orderService = orderService;
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST, produces = "application/json")
-    public String newClientOrder(@Valid @RequestBody OrderForm orderForm, BindingResult bindingResult, Model model, HttpSession session) {
+    public String newClientOrder(@Valid @RequestBody ClientOrderForm clientOrderForm, BindingResult bindingResult, Model model, HttpSession session) {
 
         if (bindingResult.hasErrors()) {
             return "fragment/checkout-page :: checkout";
         }
-        System.out.println(orderForm);
+        System.out.println(clientOrderForm);
         ShoppingCart shoppingCart = (ShoppingCart) session.getAttribute(Constants.CURRENT_SHOPPING_CART);
-        ClientOrder clientOrder = clientService.newClientOrder(shoppingCart,orderForm);
+        ClientOrder clientOrder = orderService.newClientOrder(shoppingCart, clientOrderForm);
         model.addAttribute("totalCost", shoppingCart.getTotalCost().doubleValue());
 
         shoppingCart.getItems().clear();

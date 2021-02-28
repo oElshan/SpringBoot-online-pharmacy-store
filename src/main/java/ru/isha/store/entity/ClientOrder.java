@@ -1,6 +1,5 @@
 package ru.isha.store.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import ru.isha.store.utils.Views;
 
@@ -34,8 +33,7 @@ public class ClientOrder implements Serializable {
         this.created = created;
     }
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "id_status",foreignKey = @ForeignKey(name = "clientOrder_status__fk"))
     public Status getStatus() {
         return status;

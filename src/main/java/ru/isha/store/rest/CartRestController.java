@@ -7,7 +7,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.isha.store.dto.CartItemDTO;
-import ru.isha.store.dto.OrderForm;
+import ru.isha.store.dto.ClientOrderForm;
 import ru.isha.store.entity.ClientOrder;
 import ru.isha.store.model.ShoppingCart;
 import ru.isha.store.utils.Views;
@@ -89,7 +89,7 @@ public class CartRestController {
 		consumes = "application/json;charset=UTF-8",
 		produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public ResponseEntity<ClientOrder> payByCard(Principal principal, @Valid @RequestBody OrderForm orderForm)  {
+	public ResponseEntity<ClientOrder> payByCard(Principal principal, @Valid @RequestBody ClientOrderForm clientOrderForm)  {
 		return null;
 	}
 }

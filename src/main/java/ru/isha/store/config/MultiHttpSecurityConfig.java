@@ -4,6 +4,7 @@ package ru.isha.store.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -18,13 +19,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ru.isha.store.security.MyBasicAuthenticationEntryPoint;
 
 @EnableWebSecurity
+@ComponentScan("ru.isha.store.security")
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class MultiHttpSecurityConfig  {
 
     @Autowired
     @Qualifier("userDetailServicesImpl")
     private UserDetailsService userDetailsService;
-
 
 
     @Configuration
@@ -34,11 +35,9 @@ public class MultiHttpSecurityConfig  {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.csrf().disable()
-                    .antMatcher("/rest/customer/**").
-//            authorizeRequests(authorize -> authorize
-//                    .anyRequest().hasRole("ADMIN"))
-//                    .httpBasic(withDefaults());
-            authorizeRequests().anyRequest().hasRole("USER")
+                    .antMatcher("/rest/**").
+            authorizeRequests().antMatchers("/rest/customer/**").hasRole("USER")
+                    .antMatchers("/rest/admin/**").hasRole("ADMIN")
                     .and()
                     .httpBasic().authenticationEntryPoint(authenticationEntryPoint);
         }
@@ -57,7 +56,6 @@ public class MultiHttpSecurityConfig  {
                     .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/user/**").hasAnyRole("ADMIN", "USER")
                     .antMatchers("/**").permitAll();
-//                .anyRequest().authenticated();
             http
                     .formLogin()
                     .permitAll()
