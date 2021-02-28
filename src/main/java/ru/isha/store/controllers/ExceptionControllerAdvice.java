@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @ControllerAdvice
-public class ExceptionController  {
-    private static final Logger log = LoggerFactory.getLogger(ExceptionController.class);
+public class ExceptionControllerAdvice {
+    private static final Logger log = LoggerFactory.getLogger(ExceptionControllerAdvice.class);
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public String handleError404(HttpServletRequest request, Exception e) throws  RestNoHandlerFoundException {

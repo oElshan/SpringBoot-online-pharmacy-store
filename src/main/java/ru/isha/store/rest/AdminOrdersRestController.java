@@ -1,6 +1,7 @@
 package ru.isha.store.rest;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -58,19 +59,6 @@ public class AdminOrdersRestController {
 		return orderService.getClientOrderById(id);
 	}
 
-	/**
-	 * View all orders with status
-	 *
-	 * @return orders
-	 */
-	@JsonView(Views.Public.class)
-	@RequestMapping(value = "/status/{status}",
-			method = RequestMethod.GET,
-			produces = "application/json;charset=UTF-8")
-	@ResponseBody
-	public List<ClientOrder> getOrderByStatus(@PathVariable("status")String status) {
-		return orderService.getOrdersByStatus(status);
-	}
 
 	/**
 	 * Add new order
@@ -78,13 +66,23 @@ public class AdminOrdersRestController {
 	 * @return created order
 	 */
 	@RequestMapping(
-			value = "/add",
-			method = RequestMethod.PUT,
+			method = RequestMethod.POST,
 			consumes = "application/json;charset=UTF-8",
 			produces = "application/json;charset=UTF-8")
+	@JsonView(Views.Public.class)
 	@ResponseBody
+	@ResponseStatus(HttpStatus.CREATED)
 	public ClientOrder addClientOrder(@RequestBody @Valid CartItemDTO cartItemDTO) {
 		return orderService.newClientOrder(cartItemDTO);
+	}
+
+	/**
+	 * Delete order
+	 */
+	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public void deleteClientOrder(@PathVariable("id") Long id) {
+		orderService.deleteOrder(id);
 	}
 
 }

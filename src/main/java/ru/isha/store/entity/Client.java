@@ -39,7 +39,7 @@ public class Client implements Serializable {
         this.id = id;
     }
 
-    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     public List<ClientOrder> getClientOrders() {
         return clientOrders;
     }

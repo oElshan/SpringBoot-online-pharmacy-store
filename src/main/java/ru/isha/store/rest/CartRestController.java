@@ -16,6 +16,8 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.security.Principal;
 
+
+// TODO: 2021-02-28 Stateless protocol !!
 @Controller
 @RequestMapping(value = "/rest/customer/cart")
 @Secured("ROLE_USER")
