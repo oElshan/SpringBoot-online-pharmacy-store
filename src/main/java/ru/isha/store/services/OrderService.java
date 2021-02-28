@@ -3,7 +3,7 @@ package ru.isha.store.services;
 import org.springframework.data.domain.Page;
 import ru.isha.store.dto.CartItemDTO;
 import ru.isha.store.dto.ClientOrderForm;
-import ru.isha.store.dto.EditOrder;
+import ru.isha.store.dto.EditOrderDTO;
 import ru.isha.store.entity.ClientOrder;
 import ru.isha.store.entity.Status;
 import ru.isha.store.model.ShoppingCart;
@@ -39,7 +39,7 @@ public interface OrderService {
 
     ClientOrder updateClientOrderItem(long orderId, long productId, int count);
 
-    ClientOrder updateClientOrder(EditOrder editOrder);
+    ClientOrder updateClientOrder(EditOrderDTO editOrderDTO);
 
     void deleteOrder(Long id);
 

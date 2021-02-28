@@ -4,7 +4,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-public class EditOrder {
+public class EditOrderDTO {
 
     @NotNull
     private Long id;
@@ -90,7 +90,7 @@ public class EditOrder {
 
     @Override
     public String toString() {
-        return "EditOrder{" +
+        return "EditOrderDTO{" +
                 "id=" + id +
                 ", clientFirstName='" + clientFirstName + '\'' +
                 ", clientLastName='" + clientLastName + '\'' +

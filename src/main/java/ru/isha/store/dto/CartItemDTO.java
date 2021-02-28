@@ -10,9 +10,6 @@ import java.util.Objects;
 
 public class CartItemDTO {
 
-
-    @NotEmpty
-    private Map<Long, Integer> products = new LinkedHashMap<>();
     @NotEmpty(message = "Пустое поле! Введите имя клиента!")
     @Size(max = 50,message = "max size  = 50  ")
     private String firstName;
@@ -31,7 +28,8 @@ public class CartItemDTO {
     @NotEmpty(message = "Пустое поле! Введите номер телефона!")
     @Pattern(regexp = "^([0-9]+)$", message = "Ошибка заполнения номера")
     private String phone;
-
+    @NotEmpty
+    private Map<Long, Integer> products = new LinkedHashMap<>();
     public String getZipCode() {
         return zipCode;
     }

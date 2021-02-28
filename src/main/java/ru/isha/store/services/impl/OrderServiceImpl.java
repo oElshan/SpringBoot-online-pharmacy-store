@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.isha.store.dto.CartItemDTO;
 import ru.isha.store.dto.ClientOrderForm;
-import ru.isha.store.dto.EditOrder;
+import ru.isha.store.dto.EditOrderDTO;
 import ru.isha.store.entity.Client;
 import ru.isha.store.entity.ClientOrder;
 import ru.isha.store.entity.OrderItem;
@@ -87,26 +87,27 @@ public class OrderServiceImpl implements OrderService {
             clientOrder.getOrderItems().add(orderItem);
         }
 
-        List<ClientOrder> clientOrders = new ArrayList<>();
+        List<ClientOrder> clientOrders ;
         Client client = clientRepo.findByPhone(clientOrderForm.getPhone());
-
+        Status status = statusRepo.getById(1);
+        clientOrder.setStatus(status);
         if (client == null) {
             client = new Client();
+            clientOrders = new ArrayList<>();
             client.setFirstName(clientOrderForm.getFirstName());
             client.setLastName(clientOrderForm.getLastName());
             client.setStreetAddress(clientOrderForm.getStreetAddress());
             client.setTown(clientOrderForm.getTown());
             client.setEmail(clientOrderForm.getEmail());
             client.setPhone(clientOrderForm.getPhone());
+        } else {
+            clientOrders = client.getClientOrders();
         }
-        clientOrder.setClient(client);
-        Status status = statusRepo.getById(1);
-        clientOrder.setStatus(status);
-        clientOrders.add(orderRepo.save(clientOrder));
+        clientOrders.add(clientOrder);
         client.setClientOrders(clientOrders);
+        clientOrder.setClient(client);
 
-        clientRepo.save(client);
-        return clientOrder;
+        return orderRepo.save(clientOrder);
     }
 
 
@@ -139,17 +140,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional
     @Override
-    public ClientOrder updateClientOrder(EditOrder editOrder) {
+    public ClientOrder updateClientOrder(EditOrderDTO editOrderDTO) {
 
-        ClientOrder clientOrder = orderRepo.findById(editOrder.getId().longValue());
+        ClientOrder clientOrder = orderRepo.findById(editOrderDTO.getId().longValue());
         Client client = clientOrder.getClient();
-        client.setFirstName(editOrder.getClientFirstName());
-        client.setLastName(editOrder.getClientLastName());
-        client.setEmail(editOrder.getClientEmail());
-        client.setTown(editOrder.getClientStreetTown());
-        client.setStreetAddress(editOrder.getClientStreetAddress());
-        client.setPhone(editOrder.getClientPhone());
-        Status status = statusRepo.findByName(editOrder.getOrderStatus());
+        client.setFirstName(editOrderDTO.getClientFirstName());
+        client.setLastName(editOrderDTO.getClientLastName());
+        client.setEmail(editOrderDTO.getClientEmail());
+        client.setTown(editOrderDTO.getClientStreetTown());
+        client.setStreetAddress(editOrderDTO.getClientStreetAddress());
+        client.setPhone(editOrderDTO.getClientPhone());
+        Status status = statusRepo.findByName(editOrderDTO.getOrderStatus());
         clientOrder.setClient(client);
         clientOrder.setStatus(status);
         orderRepo.save(clientOrder);

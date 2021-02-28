@@ -10,7 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ru.isha.store.dto.EditOrder;
+import ru.isha.store.dto.EditOrderDTO;
 import ru.isha.store.dto.EditOrderItem;
 import ru.isha.store.dto.SearchForm;
 import ru.isha.store.entity.ClientOrder;
@@ -87,7 +87,7 @@ public class AjaxAdminController {
         }
 
         if (!model.containsAttribute("editOrder")) {
-            model.addAttribute("editOrder", new EditOrder());
+            model.addAttribute("editOrder", new EditOrderDTO());
         }
 
         ClientOrder clientOrder = orderService.getClientOrderById(id);
@@ -113,18 +113,18 @@ public class AjaxAdminController {
 
 
     @RequestMapping(path = "/ajax/admin/edit-order", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
-    public String changeOrder(@Valid @RequestBody EditOrder editOrder, BindingResult bindingResult, RedirectAttributes redirectAttributes , Model model) {
+    public String changeOrder(@Valid @RequestBody EditOrderDTO editOrderDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes , Model model) {
 
-        logger.info(editOrder.toString());
+        logger.info(editOrderDTO.toString());
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.editOrder", bindingResult);
-            redirectAttributes.addFlashAttribute("editOrder", editOrder);
+            redirectAttributes.addFlashAttribute("editOrder", editOrderDTO);
 
-            return "redirect:/ajax/admin/edit-order?id=" + editOrder.getId();
+            return "redirect:/ajax/admin/edit-order?id=" + editOrderDTO.getId();
         }
 
-        ClientOrder clientOrder = orderService.updateClientOrder(editOrder);
+        ClientOrder clientOrder = orderService.updateClientOrder(editOrderDTO);
 
         List<OrderItem> orderItems = clientOrder.getOrderItems();
 
