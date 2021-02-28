@@ -19,8 +19,8 @@
                     <!--<span sec:authentication="name">Bob</span>-->
                     <li sec:authorize="isAnonymous()"><a href="/login">Login</a></li>
                     <ul >
-                        <li sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/admin" >Admin page</a>
-                        <li sec:authorize="hasAnyAuthority('ROLE_ADMIN,ROLE_USER')"><a href="/logout" class="text-danger">Logout</a>
+                        <li sec:authorize="hasRole('ADMIN')"><a href="/admin" >Admin page</a>
+                        <li sec:authorize="hasAnyRole('ADMIN,USER')"><a href="/logout" class="text-danger">Logout</a>
                     </ul>
                     </li>
                 </ul>

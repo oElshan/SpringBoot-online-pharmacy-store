@@ -4,7 +4,7 @@
       html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
     <div th:fragment="viewSoppingCart" >
-        <div class="container" th:object="${#session.getAttribute('CURRENT_SHOPPING_CART')}">
+        <div class="container" th:object="${shoppingCart}">
             <!-- ========================================= CONTENT ========================================= -->
             <div class="col-xs-12 col-md-9 items-holder no-margin">
 
