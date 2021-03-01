@@ -1,14 +1,14 @@
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
     <nav th:fragment="topbar" class="top-bar animate-dropdown">
         <div class="container">
             <div class="col-xs-6 col-sm-6 no-margin">
                 <ul>
                     <li><a href="/">Home</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="#">Contact</a></li>
                 </ul>
             </div><!-- /.col -->
 
@@ -18,13 +18,13 @@
                 <ul class="right">
                     <!--<span sec:authentication="name">Bob</span>-->
                     <li sec:authorize="isAnonymous()"><a href="/login">Login</a></li>
-                    <ul >
-                        <li sec:authorize="hasRole('ADMIN')"><a href="/admin" >Admin page</a>
-                        <li sec:authorize="hasAnyRole('ADMIN,USER')"><a href="/logout" class="text-danger">Logout</a>
+                    <ul>
+                        <li sec:authorize="hasRole('ADMIN')"><a href="/admin" >Admin page</a></li>
+                        <li sec:authorize="hasAnyRole('ADMIN,USER')"><a href="/logout" class="text-danger">Logout</a></li>
                     </ul>
-                    </li>
+
                 </ul>
             </div><!-- /.col -->
         </div><!-- /.container -->
     </nav><!-- /.top-bar -->
-</html>>
+</html>
