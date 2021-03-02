@@ -20,14 +20,41 @@
                 'min': arrayOfStrings[0],
                 'max': arrayOfStrings[1]
             };
+            var filterProduct = {
+                "id":$('#idCategory').val(),
+                "search":$('#search').val(),
+                "price": arrayOfStrings,
+                "producers": checkedProducer
+            };
+            // alert(JSON.stringify(filterProduct));filterProduct
+
+            $.ajax({
+                url : window.location.pathname ,
+                method : 'POST',
+                cache: false,
+                contentType: 'application/json',
+                data:   JSON.stringify(filterProduct),
+                success : function(checkoutOrder) {
+                    $('#product-content').html(checkoutOrder);
+                },
+                error : function(xhr) {
+                    if (xhr.status == 400) {
+                        alert(xhr.responseJSON.message);
+                    } else {
+                        alert(JSON.stringify(ilterProduct));
+                    }
+                }
+            });
 
 
 
-            if (checkedProducer.length==0) {
-                window.location.href = window.location.pathname + '?search='+$('#search').val()+ '&price=' + arrayOfStrings[0] + ',' + arrayOfStrings[1];
-            } else {
-                window.location.href = window.location.pathname  +'?search='+$('#search').val()+ '&price=' + arrayOfStrings[0] + ',' + arrayOfStrings[1]+'&producers='+checkedProducer.toString();
-            }
+
+
+            // if (checkedProducer.length==0) {
+            //     window.location.href = window.location.pathname + '?search='+$('#search').val()+ '&price=' + arrayOfStrings[0] + ',' + arrayOfStrings[1];
+            // } else {
+            //     window.location.href = window.location.pathname  +'?search='+$('#search').val()+ '&price=' + arrayOfStrings[0] + ',' + arrayOfStrings[1]+'&producers='+checkedProducer.toString();
+            // }
         });
 
 

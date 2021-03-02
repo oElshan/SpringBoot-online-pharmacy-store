@@ -14,14 +14,9 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
 
     Product findProductById(Long id);
 
-    @Query(value = "SELECT max(price) FROM product as p WHERE  p.id_subcategory=?",
+    @Query(value = "SELECT min(price),max(price) FROM  product as p WHERE p.id_subcategory=? ",
             nativeQuery = true)
-     BigDecimal maxPriceBySubCategory(long id);
-
-
-    @Query(value = "SELECT min(price),max(price) FROM  product as p JOIN subcategory s on p.id_subcategory=s.id WHERE  s.url=?",
-            nativeQuery = true)
-    List<BigDecimal[]> getRangePriceByProduct_SubCategory(String subcategory);
+    List<BigDecimal[]> getRangePriceByProduct_SubCategory(Long id);
 
     List <Product> findByNameContaining(String name, Pageable pageable);
 
@@ -40,8 +35,6 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
     Page<Product> findByNameContainingAndProducer_IdIn(String name, Set<Long> producerId, Pageable pageable);
 
    Page<Product> findByNameContainingAndPriceBetweenAndProducer_IdIn(String name, BigDecimal piceMin, BigDecimal priceMax, Set<Long> producerId, Pageable pageable);
-
-
 
 
     @Query(value = "SELECT max(price) FROM product p WHERE p.name LIKE %?1%",
@@ -68,7 +61,7 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
     Page<Product> findByCategory_Id(long id, Pageable pageable);
 
 
-    Page<Product> findBySubcategory_IdAndPriceBetweenAndProducer_IdIn(long id, BigDecimal min, BigDecimal max, Set<Long> producerId, Pageable pageable);
+    Page<Product> findBySubcategory_IdAndPriceBetweenAndProducer_IdIn(Long idSubcategory, BigDecimal min, BigDecimal max, Set<Long> producerId, Pageable pageable);
 
-    Page<Product> findBySubcategory_IdAndPriceBetween(long id, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
+    Page<Product> findBySubcategory_IdAndPriceBetween(Long idSubcategory, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
 }

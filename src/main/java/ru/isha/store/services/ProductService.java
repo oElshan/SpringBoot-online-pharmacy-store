@@ -40,7 +40,7 @@ public interface ProductService {
 
      Page<Product> findAllProductBySubCategoryURL(String categoryURL, Pageable pageable);
 
-    Map<String,BigDecimal> getMinMaxPriceProductByCategoryURL(String subcategory);
+    Map<String,BigDecimal> getMinMaxPriceProductBySubcategory(Subcategory subcategory);
 
     Map<String,BigDecimal> getMinMaxPriceProductBySearchName(String search) ;
 
@@ -55,4 +55,6 @@ public interface ProductService {
     Page<Product> getProductByFilter(FilterProduct filterProduct, Pageable pageable);
 
     Collection<Product> findAll();
+
+    public Subcategory getSubcategoryById(Long id);
 }

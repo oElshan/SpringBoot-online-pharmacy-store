@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import ru.isha.store.dto.FilterProduct;
 import ru.isha.store.dto.NewProductForm;
 import ru.isha.store.entity.*;
 import ru.isha.store.exception.ResourceNotFoundException;
+import ru.isha.store.exception.UnknownEntityException;
 import ru.isha.store.repository.*;
 import ru.isha.store.services.ProductService;
 
@@ -67,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Category findCategoryByUrl(String url) {
-        return categoryRepo.findByUrl(url);
+        return categoryRepo.findByUrl(url).orElseThrow(() -> new UnknownEntityException("url",Category.class.getName()));
     }
 
     @Override
@@ -186,9 +188,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Map<String,BigDecimal> getMinMaxPriceProductByCategoryURL(String subcategory) {
+    public Map<String,BigDecimal> getMinMaxPriceProductBySubcategory(Subcategory subcategory) {
         Map<String, BigDecimal> rangePriceMinMax = new HashMap<>();
-        List<BigDecimal[]> rangePrice = productRepo.getRangePriceByProduct_SubCategory(subcategory);
+        List<BigDecimal[]> rangePrice = productRepo.getRangePriceByProduct_SubCategory(subcategory.getId());
         for (BigDecimal[] m : rangePrice) {
             rangePriceMinMax.put("min", m[0]);
             rangePriceMinMax.put("max", m[1]);
@@ -222,17 +224,28 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> getProductByFilter(FilterProduct filterProduct, Pageable pageable) {
-        Page<Product> productPage;
+        Page<Product> productPage = new PageImpl<Product>(Collections.singletonList(new Product()));
+        if (filterProduct.getId() != null) {
+            if (filterProduct.getProducers() == null) {
+                productPage = productRepo.findBySubcategory_IdAndPriceBetween(filterProduct.getId(),
+                        filterProduct.getPrice()[0], filterProduct.getPrice()[1], pageable);
 
-        if (filterProduct.getProducers() == null) {
-            productPage = productRepo.findBySubcategory_IdAndPriceBetween(filterProduct.getIdCategory(),
-                    filterProduct.getPrice()[0], filterProduct.getPrice()[1], pageable);
+            } else {
+                productPage = productRepo.findBySubcategory_IdAndPriceBetweenAndProducer_IdIn(
+                        filterProduct.getId(), filterProduct.getPrice()[0], filterProduct.getPrice()[1],
+                        filterProduct.getProducers(), pageable);
+            }
 
-        } else {
+        } else if (filterProduct.getSearch() != null) {
+            if (filterProduct.getProducers().isEmpty()) {
+                productPage = productRepo.findByNameContainingAndPriceBetween(filterProduct.getSearch(),
+                        filterProduct.getPrice()[0], filterProduct.getPrice()[1], pageable);
 
-            productPage = productRepo.findBySubcategory_IdAndPriceBetweenAndProducer_IdIn(
-                    filterProduct.getIdCategory(), filterProduct.getPrice()[0], filterProduct.getPrice()[1],
-                    filterProduct.getProducers(), pageable);
+            } else {
+                productPage = productRepo.findByNameContainingAndPriceBetweenAndProducer_IdIn(
+                        filterProduct.getSearch(), filterProduct.getPrice()[0], filterProduct.getPrice()[1],
+                        filterProduct.getProducers(), pageable);
+            }
         }
 
         return productPage;
@@ -260,7 +273,13 @@ public class ProductServiceImpl implements ProductService {
         if (subcategory == null) {
             throw new ResourceNotFoundException("not found category because url failed");
         }
-
         return subcategory;
     }
+
+    @Override
+    public Subcategory getSubcategoryById(Long id) {
+
+        return subCategoryRepo.findById(id).orElseThrow(() -> new UnknownEntityException("Entity does not exist",Subcategory.class.getName()));
+    }
+
 }

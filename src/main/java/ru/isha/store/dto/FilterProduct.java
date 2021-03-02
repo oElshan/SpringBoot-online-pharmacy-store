@@ -5,10 +5,26 @@ import java.util.Set;
 
 public class FilterProduct {
 
-    private Long idCategory;
+    private String search;
+    private Long id;
     private BigDecimal[] price;
     private Set<Long> producers;
 
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Set<Long> getProducers() {
         return producers;
@@ -16,15 +32,6 @@ public class FilterProduct {
 
     public void setProducers(Set<Long> producers) {
         this.producers = producers;
-    }
-
-
-    public Long getIdCategory() {
-        return idCategory;
-    }
-
-    public void setIdCategory(Long idCategory) {
-        this.idCategory = idCategory;
     }
 
     public BigDecimal[] getPrice() {

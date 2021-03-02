@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import ru.isha.store.entity.Category;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CategoryRepo extends JpaRepository<Category, Integer> {
 
@@ -11,6 +12,7 @@ public interface CategoryRepo extends JpaRepository<Category, Integer> {
 
     Category findById(int id);
 
-    Category findByUrl(String url);
+
+    Optional<Category> findByUrl(String url);
 
 }

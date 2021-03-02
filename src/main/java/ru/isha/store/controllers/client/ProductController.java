@@ -4,15 +4,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.isha.store.controllers.AbstractProductController;
+import ru.isha.store.dto.FilterProduct;
 import ru.isha.store.entity.Product;
 import ru.isha.store.services.ProductService;
 import ru.isha.store.utils.Constants;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +29,37 @@ public class ProductController extends AbstractProductController {
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
+
+    @RequestMapping(value = "/search",method = RequestMethod.POST,produces ="application/json" )
+    public  String showProductByFilter(@RequestBody FilterProduct filterProduct, Model model,
+                                       HttpServletRequest request,
+                                       HttpSession session) {
+
+
+        session.setAttribute("filterProduct", filterProduct);
+        Page<Product> productsPage = productService.getProductByFilter(filterProduct, PageRequest.of(0, Constants.MAX_PRODUCTS_PER_HTML_PAGE));
+        model.addAttribute("urlPagination", request.getRequestURI() + '?');
+        model.addAttribute("filterPrice", filterProduct.getPrice());
+        model.addAttribute("filterProducersIdSet", filterProduct.getProducers());
+        model.addAttribute("isFilterPrice", true);
+        if (filterProduct.getSearch() != null) {
+            model.addAttribute("search", filterProduct.getSearch());
+            model.addAttribute("breadcrumb", filterProduct.getSearch());
+            model.addAttribute("minMax", productService.getMinMaxPriceProductBySearchName(filterProduct.getSearch()));
+        }
+        model.addAttribute("products", productsPage.getContent());
+        model.addAttribute("productsPage", productsPage);
+        model.addAttribute("pageNumbers", pagination(productsPage));
+        return "fragment/product-content :: content";
+    }
+
+
+
+
+
+
+
+
 
     @GetMapping(value = "/search")
     public String searchItemGrid(@RequestParam("search") String search, @RequestParam("page") Optional<Integer> page,
