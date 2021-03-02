@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <div th:fragment="content" id= "product-content" >
+        <div class="col-xs-12 col-sm-9 no-margin wide sidebar">
+
+            <section id="gaming">
+                <div class="grid-list-products">
+                    <h2 class="section-title" th:text="${breadcrumb}">Gaming</h2>
+
+                    <div class="control-bar">
+                        <span class="min-max text-danger" th:if="${filterPrice!=null}" th:text="|Filter Price: ${filterPrice[0]} - ${filterPrice[1]} Azn|" style="float: left">Price: $89 - $2899</span>
+                        <div class="grid-list-buttons">
+                            <ul>
+                                <li class="grid-list-button-item active"><a data-toggle="tab" href="#grid-view"><i class="fa fa-th-large"></i> Grid</a></li>
+                                <li class="grid-list-button-item "><a data-toggle="tab" href="#list-view"><i class="fa fa-th-list"></i> List</a></li>
+                            </ul>
+                        </div>
+                    </div><!-- /.control-bar -->
+
+                    <div class="tab-content">
+                        <div id="grid-view" class="products-grid fade tab-pane in active">
+
+                            <div class="product-grid-holder">
+                                <div class="row no-margin" >
+
+                                    <div class="col-xs-6  col-sm-4  no-margin product-item-holder hover" th:each="product :${products}">
+                                        <div class="product-item">
+                                            <div th:if="${product.specCategory}!=null" class="ribbon red"><span th:text="${product.specCategory.name}">sale</span></div>
+                                            <div class="image">
+                                                <img alt="" th:src="@{'/static/images/products/'+${product.imgLink}}"  th:attr="data-echo=@{'/static/images/products/'+${product.imgLink}}" data-echo="" />
+                                            </div>
+                                            <div class="body">
+                                                <div th:if="${product.specCategory!=null && product.specCategory.name=='Акция'}"  class="label-discount green">-50% sale</div>
+                                                <div class="title">
+                                                    <a href="single-product.html" th:text="${product.name}">VAIO Fit Laptop - Windows 8 SVF14322CXW</a>
+                                                </div>
+                                                <div class="brand" th:text="${product.producer!=null}? ${product.producer.name} :'no name'">Bayer</div>
+                                            </div>
+                                            <div class="prices">
+                                                <!--<div class="price-prev"  >$1399.00</div>-->
+                                                <div class="price-current pull-right" th:text="|${product.price} Azn|">$1199.00</div>
+                                            </div>
+                                            <div class="hover-area">
+                                                <div class="add-cart-button">
+                                                    <a href = "javascript:void(0);"  th:id="|add-${product.id}|" class="le-button"  data-product_id="" th:attr="data-product_id=${product.id}">add to cart</a>
+                                                </div>
+                                            </div>
+                                        </div><!-- /.product-item -->
+                                    </div><!-- /.product-item-holder -->
+
+
+                                </div><!-- /.row -->
+                            </div><!-- /.product-grid-holder -->
+
+                            <div class="pagination-holder">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 text-left" >
+                                        <ul class="pagination pagination-sm flex-wrap"  th:if="${productsPage.totalPages > 0}">
+                                            <li th:each="pageNumber : ${pageNumbers}" th:class="${pageNumber==productsPage.number + 1} ? 'current':'page-item' ">
+
+                                                <a th:href="|${urlPagination}&page=${pageNumber}|" th:text="${pageNumber}" class="page-link">1</a>
+                                            </li>
+                                            <li>
+                                                <a >next</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="result-counter">
+                                            Showing <span>1-9</span> of <span th:text="${productsPage.totalPages}">11</span> results
+                                        </div>
+                                    </div>
+
+                                </div><!-- /.row -->
+                            </div><!-- /.pagination-holder -->
+                        </div><!-- /.products-grid #grid-view -->
+
+                        <div id="list-view" class="products-grid fade tab-pane ">
+                            <div class="products-list">
+
+                                <div class="product-item product-item-holder" th:each="product :${products}">
+                                    <div  th:if="${product.specCategory}!=null" class="ribbon red"><span th:text="${product.specCategory.name}">sale</span></div>
+                                    <div class="ribbon blue"><span>new!</span></div>
+                                    <div class="row">
+                                        <div class="no-margin col-xs-12 col-sm-4 image-holder">
+                                            <div class="image">
+                                                <img alt=""  th:attr="data-echo=@{'/static/images/products/'+${product.imgLink}}" data-echo="" />
+                                            </div>
+                                        </div><!-- /.image-holder -->
+                                        <div class="no-margin col-xs-12 col-sm-5 body-holder">
+                                            <div class="body">
+                                                <div th:if="${product.specCategory!=null && product.specCategory.name=='Акция'}" class="label-discount green" >-50% sale</div>
+                                                <div class="title">
+                                                    <a href="single-product.html" th:text="${product.name}">VAIO Fit Laptop - Windows 8 SVF14322CXW</a>
+                                                </div>
+                                                <div class="brand">Bayer</div>
+                                                <div class="excerpt">
+                                                    <p th:text="${product.description}"> </p>
+                                                </div>
+                                            </div>
+                                        </div><!-- /.body-holder -->
+                                        <div class="no-margin col-xs-12 col-sm-3 price-area">
+                                            <div class="right-clmn">
+                                                <div class="price-current" th:text="|${product.price} Azn|">$1199.00</div>
+                                                <div class="availability"><label>availability:</label><span class="available">  in stock</span></div>
+                                            </div>
+                                        </div><!-- /.price-area -->
+                                    </div><!-- /.row -->
+                                </div><!-- /.product-item -->
+
+
+                            </div><!-- /.products-list -->
+
+                            <div class="pagination-holder">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 text-left" >
+                                        <ul class="pagination"  th:if="${productsPage.totalPages > 0}">
+                                            <li th:each="pageNumber : ${pageNumbers}" th:class="${pageNumber==productsPage.number + 1} ? 'current ' ">
+                                                <a th:href="|${urlPagination}page=${pageNumber}|" th:text="${pageNumber}"  >1</a>
+                                            </li>
+                                            <li>
+                                                <a >next</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="result-counter">
+                                            Showing <span>1-9</span> of <span th:text="${productsPage.totalPages}">11</span> results
+                                        </div>
+                                    </div>
+
+                                </div><!-- /.row -->
+                            </div><!-- /.pagination-holder -->
+
+                        </div><!-- /.products-grid #list-view -->
+
+                    </div><!-- /.tab-content -->
+                </div><!-- /.grid-list-products -->
+
+            </section><!-- /#gaming -->
+        </div><!-- /.col -->
+    </div>
+
+</html>

@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <div th:fragment="filter"  >
+        <div class="col-xs-12 col-sm-3 no-margin sidebar narrow">
+            <!-- ========================================= PRODUCT FILTER ========================================= -->
+            <div class="widget">
+                <h1>Product Filters</h1>
+                <div class="body bordered"  >
+                    <!--<form th:action="${urlForm}" method="get" class="body bordered"  >-->
+                    <input th:id="idCategory" th:if="${category != null}"  name="idCategory" type="hidden" th:value="${category.id}">
+                    <input th:id="search" th:if="${search != null}"  name="search" type="hidden" th:value="${search}">
+                    <div class="price-filter">
+                        <h2>Price</h2>
+                        <div class="price-range-holder">
+                            <input id="price-filter" name="price" type="text" class="price-slider" data-min="" data-max ="" th:attr="data-min=${minMax['min']},data-max=${minMax['max']}"  th:value="|${minMax['min']},${minMax['max']}|" >
+                            <span class="min-max" th:text="|Price: ${minMax['min']} - ${minMax['max']} Azn|">Price: $89 - $2899</span>
+                        </div>
+                    </div><!-- /.price-filter -->
+                    <hr>
+
+                    <div class="category-filter">
+                        <h2 data-toggle="collapse" href="#collapseBrands" role="button" aria-expanded="false" aria-controls="collapseBrands"><i class="fa fa-angle-down" style="padding-right: 20%"></i>
+                            Brands</h2>
+                        <div class="collapse in" id="collapseBrands">
+                            <input id="searchProducer" type="text" class="form-control" placeholder="Search by producer" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <div th:replace="~{fragment/producer-list :: producer-list}" ></div>
+
+                        </div>
+                    </div>
+                    <hr>
+
+                    <span class="filter-button" >
+                                <button class="btn btn-success"  href="#" style="min-width: 100%;min-height: 100%;position: relative;" >Apply</button>
+                            </span>
+
+                </div><!-- /.body -->
+            </div><!-- /.widget -->
+            <!-- ========================================= PRODUCT FILTER : END ========================================= -->
+
+
+        </div>
+    </div>
+
+</html>
