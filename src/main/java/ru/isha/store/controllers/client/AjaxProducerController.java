@@ -14,7 +14,7 @@ import javax.servlet.ServletContext;
 @RequestMapping(value = "/ajax/producers")
 public class AjaxProducerController {
 
-    private ServletContext servletContext;
+    private final ServletContext servletContext;
 
     public AjaxProducerController(ServletContext servletContext) {
         this.servletContext = servletContext;

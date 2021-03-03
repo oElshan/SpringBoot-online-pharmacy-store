@@ -2,7 +2,6 @@ package ru.isha.store.services.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.isha.store.entity.Product;
 import ru.isha.store.model.ShoppingCart;
@@ -20,11 +19,14 @@ public class WebServiceImpl  implements WebService {
     private static final Logger log = LoggerFactory.getLogger(WebServiceImpl.class);
 
     // TODO: 2021-02-19 реализовтаь JSONCookieService
-    @Autowired
-    private CookieService cookieService;
+    private final CookieService cookieService;
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
+
+    public WebServiceImpl(CookieService cookieService, ProductService productService) {
+        this.cookieService = cookieService;
+        this.productService = productService;
+    }
 
     @Override
     public String serializeShoppingCart(ShoppingCart shoppingCart) {

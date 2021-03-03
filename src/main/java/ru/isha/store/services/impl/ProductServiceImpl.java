@@ -34,15 +34,15 @@ import java.util.stream.Collectors;
 @PropertySource("classpath:application.properties")
 public class ProductServiceImpl implements ProductService {
 
-    private ProductRepo productRepo;
+    private final ProductRepo productRepo;
 
-    private ProducerRepo producerRepo;
+    private final ProducerRepo producerRepo;
 
-    private SubCategoryRepo subCategoryRepo;
+    private final SubCategoryRepo subCategoryRepo;
 
-    private CategoryRepo categoryRepo;
+    private final CategoryRepo categoryRepo;
 
-    private SpecCategoryRepo specCategoryRepo;
+    private final SpecCategoryRepo specCategoryRepo;
 
 
     public ProductServiceImpl(ProductRepo productRepo, ProducerRepo producerRepo, SubCategoryRepo subCategoryRepo,
@@ -102,25 +102,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findProductBySearch(String name, BigDecimal[] price, Set<Long> producers, Pageable pageable) {
-
-        if (price == null && producers == null) {
+    public Page<Product> findProductBySearch(String name, Pageable pageable) {
 
             return productRepo.findByNameLike(name, pageable);
-
-        } else if (price != null && producers == null) {
-
-            return productRepo.findByNameContainingAndPriceBetween(name, price[0], price[1], pageable);
-
-        } else if (price == null && producers != null) {
-
-            return productRepo.findByNameContainingAndProducer_IdIn(name,  producers, pageable);
-
-        } else {
-            return productRepo.findByNameContainingAndPriceBetweenAndProducer_IdIn(name, price[0], price[1],
-                    producers, pageable);
-        }
-
     }
 
     @Override
@@ -226,7 +210,7 @@ public class ProductServiceImpl implements ProductService {
     public Page<Product> getProductByFilter(FilterProduct filterProduct, Pageable pageable) {
         Page<Product> productPage = new PageImpl<Product>(Collections.singletonList(new Product()));
         if (filterProduct.getId() != null) {
-            if (filterProduct.getProducers() == null) {
+            if (filterProduct.getProducers().isEmpty()) {
                 productPage = productRepo.findBySubcategory_IdAndPriceBetween(filterProduct.getId(),
                         filterProduct.getPrice()[0], filterProduct.getPrice()[1], pageable);
 
@@ -240,7 +224,6 @@ public class ProductServiceImpl implements ProductService {
             if (filterProduct.getProducers().isEmpty()) {
                 productPage = productRepo.findByNameContainingAndPriceBetween(filterProduct.getSearch(),
                         filterProduct.getPrice()[0], filterProduct.getPrice()[1], pageable);
-
             } else {
                 productPage = productRepo.findByNameContainingAndPriceBetweenAndProducer_IdIn(
                         filterProduct.getSearch(), filterProduct.getPrice()[0], filterProduct.getPrice()[1],
@@ -256,14 +239,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Producer> getProducersByCategoryURL(String categoryName) {
-
         List<Producer> producers = new ArrayList<>();
-
         for (Product product : productRepo.findAllBySubcategory_Url(categoryName)) {
             producers.add(product.getProducer());
         }
         return producers.stream().distinct().collect(Collectors.toList());
-
     }
 
 
@@ -275,10 +255,8 @@ public class ProductServiceImpl implements ProductService {
         }
         return subcategory;
     }
-
     @Override
     public Subcategory getSubcategoryById(Long id) {
-
         return subCategoryRepo.findById(id).orElseThrow(() -> new UnknownEntityException("Entity does not exist",Subcategory.class.getName()));
     }
 

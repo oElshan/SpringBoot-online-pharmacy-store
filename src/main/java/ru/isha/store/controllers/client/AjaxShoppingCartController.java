@@ -21,9 +21,9 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class AjaxShoppingCartController {
 
-    private ProductService productService;
+    private final ProductService productService;
 
-    private WebService webService;
+    private final WebService webService;
 
     public AjaxShoppingCartController(ProductService productService, WebService webService) {
         this.productService = productService;

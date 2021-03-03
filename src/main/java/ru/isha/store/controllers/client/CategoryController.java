@@ -25,16 +25,14 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/categories")
 public class CategoryController extends AbstractProductController {
 
-    private ProductService productService;
+    private final ProductService productService;
 
-    private ServletContext servletContext;
+    private final ServletContext servletContext;
 
     public CategoryController(ProductService productService, ServletContext servletContext) {
         this.productService = productService;
         this.servletContext = servletContext;
     }
-
-    // TODO: 2020-11-30 вопрос по реквесту метода get каким образом запрашивать категории праметром или url
 
     @RequestMapping(value = "/*/*",method = RequestMethod.POST,produces ="application/json" )
     public  String showProductByFilter(@RequestBody FilterProduct filterProduct, Model model,
@@ -43,7 +41,6 @@ public class CategoryController extends AbstractProductController {
 
         Subcategory subcategory;
         model.addAttribute("filterProduct", filterProduct);
-
         session.setAttribute("filterProduct", filterProduct);
         Page<Product> productsPage = productService.getProductByFilter(filterProduct, PageRequest.of(0, Constants.MAX_PRODUCTS_PER_HTML_PAGE));
         model.addAttribute("urlPagination", request.getRequestURI() + '?');
@@ -98,7 +95,6 @@ public class CategoryController extends AbstractProductController {
 
         return "product-grid";
     }
-
 
 
     @GetMapping("/*")

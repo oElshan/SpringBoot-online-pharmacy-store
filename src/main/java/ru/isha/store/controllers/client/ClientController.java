@@ -19,7 +19,6 @@ public class ClientController {
     @RequestMapping(value = "/cart", method = RequestMethod.GET)
     public String showCart(Model model) {
         model.addAttribute("breadcrumb", "Checkout Process");
-//        теперь в cart можно типлифом найти  перменную x1 и распечатать в нудный тег
         return "cart";
     }
 

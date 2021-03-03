@@ -13,8 +13,6 @@ public class LoginController {
         return "login";
     }
 
-
-    // Login form with error
     @RequestMapping("/sign-in-failed")
     public String loginError(Model model) {
         model.addAttribute("loginError", true);

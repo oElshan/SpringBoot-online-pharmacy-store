@@ -21,9 +21,9 @@ import java.util.List;
 @RequestMapping(value = "/ajax/products")
 public class AjaxProductController {
 
-    private ProductService productService;
+    private final ProductService productService;
 
-    private ServletContext servletContext;
+    private final ServletContext servletContext;
 
     public AjaxProductController(ProductService productService, ServletContext servletContext) {
         this.productService = productService;

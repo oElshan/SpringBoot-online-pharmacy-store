@@ -164,35 +164,35 @@ class ProductServiceImplTest {
     }
 
 
-    @Test
-    void findProductBySearch() {
-        Page<Product> productPage = new PageImpl<>(Collections.singletonList(product));
-        when(productRepo.findByNameLike(product.getName(),pageRequest)).thenReturn(productPage);
-
-        when(productRepo.findByNameContainingAndPriceBetween(product.getName(), new BigDecimal(0),
-                new BigDecimal(100),pageRequest)).thenReturn(productPage);
-        when(productRepo.findByNameContainingAndProducer_IdIn(product.getName(),
-                Collections.singleton(producer.getId()), pageRequest)).thenReturn(productPage);
-        when(productRepo.findByNameContainingAndPriceBetweenAndProducer_IdIn(product.getName(), new BigDecimal(0),
-                new BigDecimal(100), Collections.singleton(producer.getId()), pageRequest)).thenReturn(productPage);
-
-        Page<Product> actual1 = productService.findProductBySearch(product.getName(),
-                new BigDecimal[]{BigDecimal.valueOf(0), BigDecimal.valueOf(100)},
-                Collections.singleton(producer.getId()), pageRequest);
-        assertThat(actual1, contains(product));
-
-        Page<Product> actual2 = productService.findProductBySearch(product.getName(),
-                null, null, pageRequest);
-        assertThat(actual2, contains(product));
-
-        Page<Product> actual3 = productService.findProductBySearch(product.getName(),
-                new BigDecimal[]{BigDecimal.valueOf(0), BigDecimal.valueOf(100)}, null, pageRequest);
-        assertThat(actual3, contains(product));
-
-        Page<Product> actual4 = productService.findProductBySearch(product.getName(),
-               null,Collections.singleton(producer.getId()), pageRequest);
-        assertThat(actual4, contains(product));
-    }
+//    @Test
+//    void findProductBySearch() {
+//        Page<Product> productPage = new PageImpl<>(Collections.singletonList(product));
+//        when(productRepo.findByNameLike(product.getName(),pageRequest)).thenReturn(productPage);
+//
+//        when(productRepo.findByNameContainingAndPriceBetween(product.getName(), new BigDecimal(0),
+//                new BigDecimal(100),pageRequest)).thenReturn(productPage);
+//        when(productRepo.findByNameContainingAndProducer_IdIn(product.getName(),
+//                Collections.singleton(producer.getId()), pageRequest)).thenReturn(productPage);
+//        when(productRepo.findByNameContainingAndPriceBetweenAndProducer_IdIn(product.getName(), new BigDecimal(0),
+//                new BigDecimal(100), Collections.singleton(producer.getId()), pageRequest)).thenReturn(productPage);
+//
+//        Page<Product> actual1 = productService.findProductBySearch(product.getName(),
+//                new BigDecimal[]{BigDecimal.valueOf(0), BigDecimal.valueOf(100)},
+//                Collections.singleton(producer.getId()), pageRequest);
+//        assertThat(actual1, contains(product));
+//
+//        Page<Product> actual2 = productService.findProductBySearch(product.getName(),
+//                null, null, pageRequest);
+//        assertThat(actual2, contains(product));
+//
+//        Page<Product> actual3 = productService.findProductBySearch(product.getName(),
+//                new BigDecimal[]{BigDecimal.valueOf(0), BigDecimal.valueOf(100)}, null, pageRequest);
+//        assertThat(actual3, contains(product));
+//
+//        Page<Product> actual4 = productService.findProductBySearch(product.getName(),
+//               null,Collections.singleton(producer.getId()), pageRequest);
+//        assertThat(actual4, contains(product));
+//    }
 
     @Test
     void findByNameContaining() {

@@ -17,9 +17,9 @@ import java.util.List;
 @Controller
 public class WelcomeController {
 
-    private ProductService productService;
+    private final ProductService productService;
 
-    private ServletContext servletContext;
+    private final ServletContext servletContext;
 
     public WelcomeController(ProductService productService, ServletContext servletContext) {
         this.productService = productService;

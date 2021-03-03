@@ -29,8 +29,6 @@ public class CookieServiceImpl implements CookieService {
     }
 
 
-
-
     @Override
     public Cookie findCookie(HttpServletRequest req, String cookieName) {
         Cookie[] cookies = req.getCookies();

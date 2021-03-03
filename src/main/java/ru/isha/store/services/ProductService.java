@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public interface ProductService {
 
@@ -20,7 +19,7 @@ public interface ProductService {
 
     List <Product> findByNameContaining(String name);
 
-    Page<Product> findProductBySearch(String name, BigDecimal[] price, Set<Long> producers, Pageable pageable);
+    Page<Product> findProductBySearch(String name,Pageable pageable);
 
     List<Subcategory> findAllSubCategory();
 

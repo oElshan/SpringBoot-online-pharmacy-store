@@ -16,8 +16,8 @@ public class AccountServiceImpl implements AccountService {
     private static final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
 
 
-    private AccountRepo accountRepo;
-    private RoleRepo roleRepo;
+    private final AccountRepo accountRepo;
+    private final RoleRepo roleRepo;
 
     public AccountServiceImpl(AccountRepo accountRepo, RoleRepo roleRepo) {
         this.accountRepo = accountRepo;

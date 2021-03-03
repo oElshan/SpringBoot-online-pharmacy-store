@@ -13,20 +13,16 @@ import ru.isha.store.utils.Constants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/products")
 public class ProductController extends AbstractProductController {
 
-    private ProductService productService;
+    private final ProductService productService;
 
-    public ProductController(ProductService productService) {
+    public  ProductController(ProductService productService) {
         this.productService = productService;
     }
 
@@ -34,7 +30,6 @@ public class ProductController extends AbstractProductController {
     public  String showProductByFilter(@RequestBody FilterProduct filterProduct, Model model,
                                        HttpServletRequest request,
                                        HttpSession session) {
-
 
         session.setAttribute("filterProduct", filterProduct);
         Page<Product> productsPage = productService.getProductByFilter(filterProduct, PageRequest.of(0, Constants.MAX_PRODUCTS_PER_HTML_PAGE));
@@ -54,68 +49,37 @@ public class ProductController extends AbstractProductController {
     }
 
 
-
-
-
-
-
-
-
     @GetMapping(value = "/search")
     public String searchItemGrid(@RequestParam("search") String search, @RequestParam("page") Optional<Integer> page,
-                                 @RequestParam(value = "price",required = false) BigDecimal[] price,
-                                 @RequestParam(value = "producers",required = false) Set<Long> producers,
-                                 Model model, HttpServletRequest request) {
+                                 Model model, HttpServletRequest request,HttpSession session) {
 
+        if (!page.isPresent()) {
+            session.removeAttribute("filterProduct");
+        }
         int currentPage = page.orElse(1);
+        FilterProduct filterProduct = (FilterProduct) session.getAttribute("filterProduct");
+        Page<Product> productsPage;
 
-        Page<Product> productsPage = productService.findProductBySearch(search,price,producers,
-                PageRequest.of(currentPage - 1, Constants.MAX_PRODUCTS_PER_HTML_PAGE));
+        if (filterProduct != null) {
+            productsPage = productService.getProductByFilter(filterProduct,
+                    PageRequest.of(currentPage - 1, Constants.MAX_PRODUCTS_PER_HTML_PAGE));
+            model.addAttribute("filterPrice", filterProduct.getPrice());
+            model.addAttribute("filterProducersIdSet", filterProduct.getProducers());
+            model.addAttribute("isFilterPrice", true);
+        } else {
+            productsPage = productService.findProductBySearch(search, PageRequest.of(currentPage - 1,
+                    Constants.MAX_PRODUCTS_PER_HTML_PAGE));
+        }
+
         List<Product> products = productsPage.getContent();
         model.addAttribute("pageNumbers", pagination(productsPage));
         model.addAttribute("search", search);
         model.addAttribute("products", products);
         model.addAttribute("productsPage", productsPage);
         model.addAttribute("breadcrumb", search);
-        model.addAttribute("minMax", productService.getMinMaxPriceProductBySearchName(search));
-
-//        model.addAttribute("filterProducersIdSet", filterProduct.getProducers());
-//        model.addAttribute("isFilterPrice", true);
-
-        if (page.orElse(null) != null) {
-
-            if (request.getParameter("price") == null && request.getParameter("producers") == null) {
-                model.addAttribute("urlPagination", request.getRequestURI() + "?search=" +
-                        search);
-            } else if (request.getParameter("price") == null && request.getParameter("producers") != null) {
-                model.addAttribute("urlPagination", request.getRequestURI() + "?search=" +
-                        request.getParameter("search")+"&producers="+request.getParameter("producers"));
-                model.addAttribute("filterProducersIdSet", Arrays.stream(request.getParameter("price")
-                        .split(",")).collect(Collectors.toSet()));
-
-            } else if (request.getParameter("price") != null && request.getParameter("producers") == null) {
-                model.addAttribute("urlPagination",
-                        request.getRequestURI() + "?search=" +
-                                request.getParameter("search") + "&price=" + request.getParameter("price"));
-            }else  model.addAttribute("urlPagination",
-                    request.getRequestURI()+"?search="+request.getParameter("search")+
-                            "&price="+request.getParameter("price")+"&producers="+request.getParameter("producers"));
-
-        } else model.addAttribute("urlPagination", request.getRequestURI() + '?'
-                + request.getQueryString());
-        request.getParameter("page");
-        if (request.getParameter("price") != null) {
-
-            model.addAttribute("filterPrice", request.getParameter("price").split(","));
-        }
-        if (request.getParameter("producers") != null) {
-            model.addAttribute("filterProducersIdSet", Arrays.stream((request.getParameter("producers")
-                    .split(","))).map(Long::parseLong) .collect(Collectors.toSet()));
-
-        }
-
         model.addAttribute("producers", productService.getProducersBySearchProductName(search));
-
+        model.addAttribute("minMax", productService.getMinMaxPriceProductBySearchName(search));
+        model.addAttribute("urlPagination", request.getRequestURI() + '?');
         return "product-grid";
     }
 
