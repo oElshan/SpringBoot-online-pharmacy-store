@@ -208,11 +208,15 @@
 
         $(document).on('click', '.basket-item .close-btn', deleteItemfromShoppingCart);
 
-        $(document).on('click', '.plus', function () {
-            var countItems = $('countItems').attr('value');
-            alert(countItems);
+        // $(document).on('click', '.quantity .plus', function () {
+        //     var countItems = $('countItems').attr('value');
+        //     alert(countItems);
+        //
+        // });
 
-        });
+
+
+
 
         $(document).on('click', '#cart-page .close-btn',function () {
             var idProduct = $(this).attr('data-product_id');
@@ -220,31 +224,12 @@
             $('#cart-page').load('/ajax/shopping-cart',function(){
             });
 
-            // $.ajax({
-            //     url : '/ajax/deleteItemFromShoppingCart',
-            //     method : 'GET',
-            //     cache: false,
-            //     success : function(viewCart) {
-            //         $('#cart-page').html(viewCart);
-            //     },
-            //     error : function(xhr) {
-            //         if (xhr.status == 400) {
-            //             alert(xhr.responseJSON.message);
-            //         } else {
-            //             alert('Error');
-            //         }
-            //     }
-            // });
-
 
         });
-        // $(document).on('click', '.cart-item .close-btn',deleteItemfromShoppingCart);
-
 
 
         //----------------------------добавление товара в корзину----------------------------
-        var addProductToCart = function() {
-            var idProduct = $(this).attr('data-product_id');
+        var addProductToCart = function(idProduct) {
             var url = '/ajax/shopping-cart/add?idProduct=' + idProduct;
             // $('#shoppingCart').load(url);
             $.ajax({
@@ -271,7 +256,10 @@
         };
 
 
-        $(document).on('click', '.product-item .le-button', addProductToCart);
+        $(document).on('click', '.product-item .le-button', function () {
+            var idProduct = $(this).attr('data-product_id');
+            addProductToCart(idProduct);
+        });
 
 
 
@@ -613,14 +601,53 @@
         });
 
         // Quantity Spinner
-        $('.le-quantity a').click(function(e){
-            e.preventDefault();
+
+        $(document).on('click', '.le-quantity a', function () {
             var currentQty= $(this).parent().parent().find('input').val();
             if( $(this).hasClass('minus') && currentQty>0){
-                $(this).parent().parent().find('input').val(parseInt(currentQty, 10) - 1);
+
+                $.ajax({
+                    url : '/ajax/shopping-cart?idProduct='+ $(this).attr('data-product-id'),
+                    method : 'DELETE',
+                    cache: false,
+                    success : function(shoppingCart) {
+                        $('#cart-page').load('/ajax/shopping-cart',function(){
+                        });
+                    },
+                    error : function(xhr) {
+                        if (xhr.status == 400) {
+                            alert(xhr.responseJSON.message);
+                        } else {
+                            alert('Error');
+                        }
+                    }
+                });
+
+                // $(this).parent().parent().find('input').val(parseInt(currentQty, 10) - 1);
             }else{
                 if( $(this).hasClass('plus')){
-                    $(this).parent().parent().find('input').val(parseInt(currentQty, 10) + 1);
+
+                    var url = '/ajax/shopping-cart/add?idProduct=' + $(this).attr('data-product-id');
+                    $.ajax({
+                        url : url,
+                        method : 'GET',
+                        cache: false,
+                        success : function(shoppingCart) {
+                            $('#cart-page').load('/ajax/shopping-cart',function(){
+                            });
+
+                        },
+                        error : function(xhr) {
+                            if (xhr.status == 400) {
+                                alert(xhr.responseJSON.message);
+                            } else {
+                                alert('Error status shopping cart');
+                            }
+                        }
+                    });
+
+                    // $(this).parent().parent().find('input').val(parseInt(currentQty, 10) + 1);
+
                 }
             }
         });

@@ -26,9 +26,9 @@
                         <div class="quantity">
                             <div class="le-quantity">
                                 <form>
-                                    <a class="minus" href="#reduce"></a>
-                                    <input id="countItems" name="quantity" readonly="readonly" type="text" value="1" />
-                                    <a class="plus" href="#add"></a>
+                                    <a class="minus" data-product-id="" th:attr="data-product-id=${productMap.key}"  href="#reduce"></a>
+                                    <input id="countItems" name="quantity" readonly="readonly" type="text" th:value="${productMap.value.count}"/>
+                                    <a class="plus" data-product-id="" th:attr="data-product-id=${productMap.key}" href="#add"></a>
                                 </form>
                             </div>
                         </div>

@@ -42,8 +42,6 @@ public class AjaxShoppingCartController {
         model.addAttribute("shoppingCart", session.getAttribute( Constants.CURRENT_SHOPPING_CART));
         return "fragment/view-shopping-cart :: viewSoppingCart";
 
-//        return "fragment/view-shopping-cart :: viewSoppingCart";
-
     }
 
     @DeleteMapping("/ajax/shopping-cart")
@@ -57,7 +55,6 @@ public class AjaxShoppingCartController {
 
     @GetMapping("/ajax/shopping-cart/add")
     public String addShoppingCart(@RequestParam("idProduct") long idProduct, HttpSession session, HttpServletResponse response) {
-
         Product product =  productService.findProductById(idProduct);
         ShoppingCart shoppingCart =(ShoppingCart) session.getAttribute(Constants.CURRENT_SHOPPING_CART);
         shoppingCart.addProduct(product,1);
@@ -65,4 +62,5 @@ public class AjaxShoppingCartController {
         session.setAttribute(Constants.CURRENT_SHOPPING_CART, shoppingCart);
         return "fragment/shopping-cart :: shopping-cart";
     }
+
 }
