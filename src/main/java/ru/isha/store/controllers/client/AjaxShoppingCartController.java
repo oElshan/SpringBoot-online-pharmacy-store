@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import ru.isha.store.entity.Product;
 import ru.isha.store.model.ShoppingCart;
 import ru.isha.store.services.ProductService;
@@ -38,10 +37,11 @@ public class AjaxShoppingCartController {
     }
 
     @GetMapping("/ajax/shopping-cart")
-    public ModelAndView getShoppingCartView(HttpSession session, ModelMap model) {
+    public String getShoppingCartView(HttpSession session, ModelMap model) {
 
-         session.setAttribute("shoppingCart",Constants.CURRENT_SHOPPING_CART);
-        return new ModelAndView("fragment/view-shopping-cart :: viewSoppingCart", model);
+        model.addAttribute("shoppingCart", session.getAttribute( Constants.CURRENT_SHOPPING_CART));
+        return "fragment/view-shopping-cart :: viewSoppingCart";
+
 //        return "fragment/view-shopping-cart :: viewSoppingCart";
 
     }
