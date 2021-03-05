@@ -35,7 +35,7 @@
                                             <div class="body">
                                                 <div th:if="${product.specCategory!=null && product.specCategory.name=='Акция'}"  class="label-discount green">-50% sale</div>
                                                 <div class="title">
-                                                    <a href="single-product.html" th:text="${product.name}">VAIO Fit Laptop - Windows 8 SVF14322CXW</a>
+                                                    <a th:href="@{'/products/'+${product.id}}" th:text="${product.name}">VAIO Fit Laptop - Windows 8 SVF14322CXW</a>
                                                 </div>
                                                 <div class="brand" th:text="${product.producer!=null}? ${product.producer.name} :'no name'">Bayer</div>
                                             </div>
