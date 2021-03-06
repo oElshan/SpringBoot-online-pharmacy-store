@@ -10,7 +10,7 @@
                 <div class="billing-address">
                     <h2 class="border h1">billing address</h2>
 
-                    <form  th:object="${shoppingCart}"   method="post" id="clientOrderForm" >
+                    <form  th:object="${clientOrderForm}"   method="post" id="clientOrderForm" >
                         <div class="row field-row">
                             <div class="col-xs-12 col-sm-6">
                                 <label>First name*</label>
@@ -67,7 +67,7 @@
 
                 <section id="your-order" >
                     <h2 class="border h1">your order</h2>
-                    <div th:object="${#session.getAttribute('CURRENT_SHOPPING_CART')}">
+                    <div th:object="${shoppingCart}">
                         <div class="row no-margin order-item"  th:each="product :*{products}">
                             <div class="col-xs-12 col-sm-1 no-margin">
                                 <a href="#" class="qty" th:text="|${product.value.count} x|" >1 x</a>
