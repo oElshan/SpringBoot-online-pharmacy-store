@@ -32,6 +32,9 @@ public class AjaxOrderController {
     public String newClientOrder(@Valid @RequestBody ClientOrderForm clientOrderForm, BindingResult bindingResult, Model model, HttpSession session) {
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("clientOrderForm", clientOrderForm);
+            model.addAttribute("shoppingCart", session.getAttribute(Constants.CURRENT_SHOPPING_CART));
+            model.addAttribute("breadcrumb", "Checkout Process");
             return "fragment/checkout-page :: checkout";
         }
         System.out.println(clientOrderForm);

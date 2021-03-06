@@ -23,7 +23,7 @@ public class ClientController {
 
     @RequestMapping(value = "/checkout" ,method = RequestMethod.GET)
     public  String createOrder(  Model model,HttpSession session) {
-        model.addAttribute("orderForm", new ClientOrderForm());
+        model.addAttribute("clientOrderForm", new ClientOrderForm());
         model.addAttribute("shoppingCart", session.getAttribute(Constants.CURRENT_SHOPPING_CART));
         model.addAttribute("breadcrumb", "Checkout Process");
         return "checkout";

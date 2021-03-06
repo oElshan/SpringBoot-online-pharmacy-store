@@ -59,13 +59,13 @@
 
 
         //------------------------AJAX для заказа---------------------------------
-        var newClientsOrder = function (orderForm) {
+        var newClientsOrder = function (clientOrderForm) {
             $.ajax({
                 url : '/ajax/orders/new',
                 method : 'POST',
                 cache: false,
                 contentType: 'application/json',
-                data:   JSON.stringify(orderForm),
+                data:   JSON.stringify(clientOrderForm),
                 success : function(checkoutOrder) {
                     $('#checkout-page').html(checkoutOrder);
                     basketStatus();
@@ -75,7 +75,7 @@
                         alert(xhr.responseJSON.message);
                     } else {
                         alert('Error new clients order');
-                        alert(JSON.stringify(orderForm));
+                        alert(JSON.stringify(clientOrderForm));
                     }
                 }
             });
@@ -83,7 +83,7 @@
 
         // форма заказа слиента
         $(document).on('click', '#btnOrderForm', function () {
-            var orderForm = {
+            var clientOrderForm = {
                 firstName: $('[name="firstName"]').val(),
                 lastName: $('[name="lastName"]').val(),
                 streetAddress: $('[name="streetAddress"]').val(),
@@ -92,7 +92,7 @@
                 email: $('[name="email"]').val(),
                 phone: $('[name="phone"]').val()
             };
-            newClientsOrder(orderForm);
+            newClientsOrder(clientOrderForm);
         });
 
         //----------------------------Поиск производителя----------------------------
