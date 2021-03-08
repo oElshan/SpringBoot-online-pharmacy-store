@@ -8,7 +8,7 @@ pharmacy-market.herokuapp.com/
     <li>JDK 1.8, Spring Boot (v2.3.8), Thymeleaf</li>
     <li>авторизация пользователей: Spring Security</li>
     <li>доступ к данным: Hibernate, Spring Data JPA</li>
-    <li>веб-служба в стиле REST в процессе разработки </li>
+    <li>веб-служба в стиле REST</li>
     <li>тесты: Spring Test, JUnit, Mockito</li>
     <li>веб-интерфейс: jQuery, jQuery Validate Plugin, Twitter Bootstrap</li>
     <li>база данных: MySQL</li>
